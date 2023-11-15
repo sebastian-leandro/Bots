@@ -23,11 +23,7 @@ async function init() {
             for(let cookie of cookies) {
                 await page.setCookie(cookie);
             }
-        }catch(e)
-            {console.error(`There was a problem trying to set the cookies: ${e}`)
-        }finally {
-            await page.goto('https://instagram.com/');
-        }
+        }catch(e){console.error(`There was a problem trying to set the cookies: ${e}`)}
     }
     return { browser, page }
 }
@@ -35,6 +31,7 @@ async function init() {
 // Check if is login or not
 async function isLoggedIn(page) {
     try {
+        await page.goto('https://instagram.com/');
         await page.waitForSelector('div._aagx', {timeout: 5000})
         return true
     }catch(e){return false}    
@@ -44,7 +41,6 @@ async function isLoggedIn(page) {
 async function login(page, browser) {
     if(username && password && username.length > 0 && password.length > 0){
         try{
-            await sleep();
             await page.type("input._aa4b._add6._ac4d[aria-label='Phone number, username, or email']",username);
             await page.type("input._aa4b._add6._ac4d[aria-label='Password']",password);
             await page.keyboard.press('Enter');
@@ -61,7 +57,7 @@ async function login(page, browser) {
     }else {
         console.error(`Username and password from the dotenv file is incorrect or is empty`);
         browser.close();
-    }
+    }    
 }
 
 // Go to Followings users
@@ -96,9 +92,9 @@ async function* unFollow(page, users) {
     // Counters
     let counter = 0; // Number of users unfollowed
     let scrollCounter = 0; // Number of how many times scroll just in case we are in the end of the list 
-    let triggerValue = Math.floor(Math.random()* 9) + 12; // A random number between 12 and 20 to make randoms waits
 
     while(counter <= 200){
+        let triggerValue = Math.floor(Math.random()* 9) + 12; // A random number between 12 and 20 to make randoms waits
         const btns = await page.$x("//button[contains(@class, '_acan') and contains(@class, '_acap') and contains(@class, '_acat') and contains(@class, '_aj1-')][./div//div[text()='Following']][not(./div//div[text()='Follow'])]")
         if(btns.length === 0){
             scrollCounter++
@@ -126,7 +122,6 @@ async function* unFollow(page, users) {
                         counter++;
                         scrollCounter = 0;
                         console.log(`Unfollow Count: ${counter}`);
-                        await sleep(Math.floor(Math.random()* 96520 - 58622) + 58622);
                         yield {action: "unfollowed", counter, username: "...",};
                         if(counter % triggerValue === 0){
                             yield {action: "sleep", duration: Math.floor(Math.random()* 360522 - 175820)+ 175820};
@@ -141,7 +136,6 @@ async function* unFollow(page, users) {
         }
     }
 }
-
 
 // Anonimus function
 (async () => {

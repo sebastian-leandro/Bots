@@ -41,6 +41,10 @@ Run the script from your terminal:
     - bash
     - node ./index.js
 
+### Optional
+
+    - You can create a users.json file in the main directory with an array to add users that you don't want to stop follow.
+
 #### The script will initiate a Puppeteer browser session and start the unfollow process on Instagram.
 
 ### Note:
