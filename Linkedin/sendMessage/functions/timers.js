@@ -13,3 +13,7 @@ export function wait (max, min, user, counter) {
   }
   return new Promise((resolve) => setTimeout(resolve, waitingTime))
 }
+
+export function triggerFunction () {
+  return Math.floor(Math.random() * 6) + 7
+}
