@@ -1,9 +1,11 @@
+import { selectors } from '../constants/variables.js'
+
 let counter = 0
 
 export async function * main (usersSet, page) {
   while (counter < 100) {
     try {
-      const btns = await page.$$()
+      const btns = await page.$$(selectors.btns)
       for (const btn of btns) {
         const profile = await btn.$x()
         let flag = false
@@ -13,7 +15,7 @@ export async function * main (usersSet, page) {
             try {
               await btn.click()
               yield { action: 'handleWarning' }
-              yield { action: 'handleMessage' }
+              yield { action: 'handleMessage', user: name }
               yield { action: 'handleUser', user: name }
               flag = true
               counter++
@@ -23,7 +25,7 @@ export async function * main (usersSet, page) {
             } catch (err) { yield { action: 'handleError', error: err.message } }
           }
         }
-        const newBtn = await page.$$()
+        const newBtn = await page.$$(selectors.btns)
         if (!newBtn || !flag) yield { action: 'handlePagination' }
       }
     } catch (err) { yield { action: 'handleError', error: err.message } }

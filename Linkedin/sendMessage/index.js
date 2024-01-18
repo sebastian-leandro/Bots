@@ -16,19 +16,19 @@ async function start () {
         await handleWarning(page)
         break
       case 'handleMessage':
-        await handleMessage()
+        await handleMessage(browser, page, state.user)
         break
       case 'handleUser':
         await saveUsers(browser, state.user, usersSet)
         break
       case 'handlePagination':
-        await handlePagination()
+        await handlePagination(browser, page)
         break
       case 'handleWait':
-        await handleWait(state.user, state.counter)
+        await handleWait(state.user, state.number)
         break
       case 'handleFinish':
-        await handleFinish()
+        await handleFinish(browser, state.number)
         break
       case 'handleError':
         await handleError(browser, state.error)
