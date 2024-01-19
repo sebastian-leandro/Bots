@@ -20,8 +20,8 @@ export async function * main (usersSet, page) {
               flag = true
               counter++
               yield { action: 'handlePagination' }
-              yield { action: 'handleWait', user: name, number: counter }
               yield { action: 'handleFinish', number: counter }
+              yield { action: 'handleWait', user: name, number: counter }
             } catch (err) { yield { action: 'handleError', error: err.message } }
           }
         }
