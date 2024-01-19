@@ -57,7 +57,7 @@ export async function login (browser, page) {
 
 export async function search (browser, page) {
   try {
-    await page.goto(credentials.search)
+    await page.goto(directions.search)
     await wait()
   } catch (err) {
     console.error(`There was a problem trying to search. Error: ${err}`)

@@ -2,9 +2,14 @@ import { credentials, selectors } from '../constants/variables'
 import { wait, triggerFunction } from './timers'
 
 export async function handleWarning (page) {
-  const modal = await page.$(selectors.warningMessage)
-  if (modal) {
-    await page.click(selectors.warningButton)
+  try {
+    const modal = await page.$(selectors.warningMessage)
+    if (modal) {
+      await page.click(selectors.warningMessage)
+      await wait(3000, 1000)
+    }
+  } catch (err) {
+    console.log('Modal Not Found')
   }
 }
 
