@@ -5,9 +5,25 @@ import { existsSync } from 'node:fs'
 import { wait } from './timers.js'
 import { credentials, directions, selectors, paths } from '../constants/variables.js'
 
+const options = {
+  headless: false,
+  slowMo: 50,
+  width: 1360,
+  height: 760,
+  lang: 'en'
+}
+
 export async function init () {
-  const browser = await puppeteer.launch({ headless: false, slowMo: 50, args: ['--lang=en'] })
+  const browser = await puppeteer.launch({
+    headless: options.headless,
+    slowMo: options.slowMo,
+    args: [
+      `--window-size=${options.width},${options.height}`,
+      '--lang=en-US'
+    ]
+  })
   const page = await browser.newPage()
+  await page.setViewport({ width: options.width, height: options.height })
   if (existsSync(paths.cookies)) {
     try {
       const cookiesStr = await readFile(paths.cookies, 'utf-8')

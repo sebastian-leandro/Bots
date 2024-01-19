@@ -5,7 +5,7 @@ import { paths } from '../constants/variables.js'
 
 export async function loadUsers () {
   let usersSet = new Set()
-  if (!existsSync(paths.cookies)) return usersSet
+  if (!existsSync(paths.users)) return usersSet
   try {
     const usersList = await readFile(paths.users, 'utf-8')
     const usersArr = usersList ? JSON.parse(usersList) : []

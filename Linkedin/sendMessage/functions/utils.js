@@ -15,10 +15,11 @@ export async function handleWarning (page) {
 
 export async function handleMessage (browser, page, user) {
   try {
+    await wait(2000, 1000)
     await page.click(selectors.modalBtn)
-    await wait()
+    await wait(2000, 1000)
     await page.type(selectors.message, `Hola buenos días ${user}. ${credentials.message}`)
-    await wait()
+    await wait(2000, 1000)
     await page.click(selectors.sendBtn)
   } catch (err) {
     console.error('There was a problem trying to send the message. Error: ', err)
@@ -53,8 +54,8 @@ export async function handleWait (user, counter) {
 }
 
 export async function handleFinish (browser, counter) {
-  if (counter === 200) {
-    console.log('Already send 200 messages. Closing...')
+  if (counter === 99) {
+    console.log('Already send 100 messages. Closing...')
     await browser.close()
     process.exit(0)
   }

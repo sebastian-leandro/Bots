@@ -11,7 +11,7 @@ async function start () {
   const messages = main(usersSet, page)
 
   for await (const state of messages) {
-    switch (state) {
+    switch (state.action) {
       case 'handleWarning':
         await handleWarning(page)
         break
