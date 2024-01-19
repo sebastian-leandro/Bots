@@ -1,3 +1,4 @@
 node_modules
-cookies
+cookies/cookies.json
+users/users.json
 .env

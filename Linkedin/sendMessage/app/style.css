@@ -1,0 +1,23 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  gap: 16px;
+  overflow: hidden;
+}
+
+button {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  padding: 0.4rem 0.7rem;
+  background-color: #090909;
+  color: #f7f7f7;  
+  cursor: pointer;
+  transition: 300ms ease-in-out opacity;
+}
+
+button:hover {
+  opacity: 0.8;
+}

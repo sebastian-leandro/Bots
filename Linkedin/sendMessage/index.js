@@ -1,9 +1,23 @@
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { init, login, search } from './functions/login.js'
 import { loadUsers, saveUsers } from './functions/users.js'
 import { handleWarning, handleMessage, handlePagination, handleWait, handleFinish, handleError } from './functions/utils.js'
 import { main } from './functions/main.js'
 
-async function start () {
+function createWindow () {
+  const window = new BrowserWindow({
+    width: 640,
+    height: 480,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  })
+  window.loadFile('./app/index.html')
+}
+app.whenReady().then(createWindow).catch(err => console.error(err))
+
+ipcMain.on('option1', async () => {
   const { browser, page } = await init()
   await login(browser, page)
   await search(browser, page)
@@ -35,6 +49,8 @@ async function start () {
         return
     }
   }
-}
+})
 
-start()
+ipcMain.on('option2', async () => {
+  console.log('Hello world')
+})
