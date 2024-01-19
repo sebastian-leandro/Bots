@@ -1,5 +1,5 @@
-import { credentials, selectors } from '../constants/variables'
-import { wait, triggerFunction } from './timers'
+import { credentials, selectors } from '../constants/variables.js'
+import { wait, triggerFunction } from './timers.js'
 
 export async function handleWarning (page) {
   try {

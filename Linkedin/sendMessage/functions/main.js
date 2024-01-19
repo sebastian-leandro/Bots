@@ -6,8 +6,9 @@ export async function * main (usersSet, page) {
   while (counter < 100) {
     try {
       const btns = await page.$$(selectors.btns)
+      console.log(btns)
       for (const btn of btns) {
-        const profile = await btn.$x()
+        const profile = await btn.$x(selectors.profile)
         let flag = false
         if (profile) {
           const name = await page.evaluate(el => el.innerText, profile[0])

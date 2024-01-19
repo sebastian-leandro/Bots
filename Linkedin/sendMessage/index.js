@@ -1,7 +1,7 @@
-import { init, login, search } from './functions/login'
-import { loadUsers, saveUsers } from './functions/users'
-import { handleWarning, handleMessage, handlePagination, handleWait, handleFinish, handleError } from './functions/utils'
-import { main } from './functions/main'
+import { init, login, search } from './functions/login.js'
+import { loadUsers, saveUsers } from './functions/users.js'
+import { handleWarning, handleMessage, handlePagination, handleWait, handleFinish, handleError } from './functions/utils.js'
+import { main } from './functions/main.js'
 
 async function start () {
   const { browser, page } = await init()
