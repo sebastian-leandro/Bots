@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron')
 
 document.getElementById('option-1').addEventListener('click', () => {
-  ipcRenderer.send('option1')
+  ipcRenderer.send('invitations')
 })
 
 document.getElementById('option-2').addEventListener('click', () => {
-  ipcRenderer.send('option2')
+  ipcRenderer.send('messages')
 })

@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { handleInvitation } from './handlers/invitation.js'
-import { handleMessage } from './handlers/message.js'
+import { handleInvitation } from './handlers/invitations.js'
+import { handleMessage } from './handlers/messages.js'
 
 function createWindow () {
   const window = new BrowserWindow({
@@ -17,8 +17,8 @@ function createWindow () {
   window.loadFile('./app/index.html')
 }
 
-ipcMain.on('option1', handleInvitation)
-ipcMain.on('option2', handleMessage)
+ipcMain.on('invitations', handleInvitation)
+ipcMain.on('messages', handleMessage)
 
 app.on('ready', () => {
   if (BrowserWindow.getAllWindows().length === 0) {

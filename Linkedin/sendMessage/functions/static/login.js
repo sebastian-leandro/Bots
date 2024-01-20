@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 import { wait } from './timers.js'
-import { credentials, directions, selectors, paths } from '../../constants/variables.js'
+import { credentials, directions, globalSelectors, paths, messageSelectors } from '../../constants/variables.js'
 
 const options = {
   headless: false,
@@ -39,7 +39,7 @@ export async function init () {
 async function isLoggedIn (page) {
   try {
     await page.goto(directions.main)
-    await page.waitForSelector(selectors.isLogged, { timeout: 5000, visible: true })
+    await page.waitForSelector(globalSelectors.isLogged, { timeout: 5000, visible: true })
     return true
   } catch (err) { return false }
 }
@@ -49,8 +49,8 @@ export async function login (browser, page) {
   if (!isLogged) {
     if (credentials.username && credentials.password) {
       try {
-        await page.type(selectors.login, credentials.username)
-        await page.type(selectors.password, credentials.password)
+        await page.type(globalSelectors.login, credentials.username)
+        await page.type(globalSelectors.password, credentials.password)
         await page.keyboard.press('Enter')
         await wait()
         try {
@@ -77,6 +77,19 @@ export async function search (browser, page) {
     await wait()
   } catch (err) {
     console.error(`There was a problem trying to search. Error: ${err}`)
+    await browser.close()
+    process.exit(1)
+  }
+}
+
+export async function searchMessages (browser, page) {
+  try {
+    await page.goto(directions.messages)
+    await wait(2000, 1000)
+    await page.click(messageSelectors.btnFilter)
+    await wait(2000, 1000)
+  } catch (err) {
+    console.error(`There was a problem trying to search messages. Error: ${err}`)
     await browser.close()
     process.exit(1)
   }

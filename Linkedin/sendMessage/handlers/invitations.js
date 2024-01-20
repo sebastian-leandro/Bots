@@ -1,27 +1,25 @@
 import { ipcMain } from 'electron'
 import { init, login, search } from '../functions/static/login.js'
-import { loadUsers, saveUsers } from '../functions/static/users.js'
-import { handleWarning, handleMessage, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
-import { main } from '../functions/connection/main.js'
+import { loadData, saveData } from '../functions/static/users.js'
+import { handleWarning, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
+import { main } from '../functions/invitations/main.js'
+import { paths, invitationSelectors } from '../constants/variables.js'
 
 export async function handleInvitation () {
-  ipcMain.on('option1', async () => {
+  ipcMain.on('invitations', async () => {
     const { browser, page } = await init()
     await login(browser, page)
     await search(browser, page)
-    const usersSet = await loadUsers()
-    const messages = main(usersSet, page)
+    const invitationsSet = await loadData(paths.invitationsUsers)
+    const invitations = main(invitationsSet, page)
 
-    for await (const state of messages) {
+    for await (const state of invitations) {
       switch (state.action) {
         case 'handleWarning':
-          await handleWarning(page)
-          break
-        case 'handleMessage':
-          await handleMessage(browser, page, state.user)
+          await handleWarning(page, invitationSelectors.warningMessage, invitationSelectors.warningMessage)
           break
         case 'handleUser':
-          await saveUsers(browser, state.user, usersSet)
+          await saveData(browser, state.user, invitationsSet, paths.invitationsUsers)
           break
         case 'handlePagination':
           await handlePagination(browser, page)

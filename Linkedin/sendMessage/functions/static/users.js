@@ -1,30 +1,28 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
-import { paths } from '../../constants/variables.js'
-
-export async function loadUsers () {
-  let usersSet = new Set()
-  if (!existsSync(paths.users)) return usersSet
+export async function loadData (filepath) {
+  let dataSet = new Set()
+  if (!existsSync(filepath)) return dataSet
   try {
-    const usersList = await readFile(paths.users, 'utf-8')
-    const usersArr = usersList ? JSON.parse(usersList) : []
-    usersSet = new Set(usersArr)
+    const dataList = await readFile(filepath, 'utf-8')
+    const dataArr = dataList ? JSON.parse(dataList) : []
+    dataSet = new Set(dataArr)
   } catch (err) {
-    console.error(`There was a problem trying to read or parsing the users file. Error: ${err}`)
-    usersSet = new Set()
+    console.error(`There was a problem trying to read or parsing the data file. Error: ${err}`)
+    dataSet = new Set()
   }
-  return usersSet
+  return dataSet
 }
 
-export async function saveUsers (browser, user, usersSet) {
+export async function saveData (browser, user, users, filepath) {
   try {
     if (user) {
-      usersSet.add(user)
-      await writeFile(paths.users, JSON.stringify([...usersSet]), 'utf-8')
+      users.add(user)
+      await writeFile(filepath, JSON.stringify([...users]), 'utf-8')
     }
   } catch (err) {
-    console.error(`There was a problem trying to save the users. Error: ${err}`)
+    console.error(`There was a problem trying to save the data. Error: ${err}`)
     await browser.close()
     process.exit(1)
   }
