@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
-import { paths } from '../constants/variables.js'
+import { paths } from '../../constants/variables.js'
 
 export async function loadUsers () {
   let usersSet = new Set()

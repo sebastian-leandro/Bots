@@ -1,4 +1,4 @@
-import { selectors } from '../constants/variables.js'
+import { selectors } from '../../constants/variables.js'
 
 export async function * main (usersSet, page) {
   let counter = 0

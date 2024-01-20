@@ -3,13 +3,13 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 import { wait } from './timers.js'
-import { credentials, directions, selectors, paths } from '../constants/variables.js'
+import { credentials, directions, selectors, paths } from '../../constants/variables.js'
 
 const options = {
   headless: false,
   slowMo: 50,
-  width: 1360,
-  height: 760,
+  width: 800,
+  height: 600,
   lang: 'en'
 }
 
