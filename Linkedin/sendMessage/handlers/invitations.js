@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { init, login, search } from '../functions/static/login.js'
 import { loadData, saveData } from '../functions/static/users.js'
-import { handleWarning, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
+import { handleWarning, sendInvitation, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
 import { main } from '../functions/invitations/main.js'
 import { paths, invitationSelectors } from '../constants/variables.js'
 
@@ -17,6 +17,9 @@ export async function handleInvitation () {
       switch (state.action) {
         case 'handleWarning':
           await handleWarning(page, invitationSelectors.warningMessage, invitationSelectors.warningMessage)
+          break
+        case 'handleInvitation':
+          await sendInvitation(browser, page)
           break
         case 'handleUser':
           await saveData(browser, state.user, invitationsSet, paths.invitationsUsers)

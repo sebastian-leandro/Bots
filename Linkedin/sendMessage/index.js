@@ -1,11 +1,11 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
 import { handleInvitation } from './handlers/invitations.js'
 import { handleMessage } from './handlers/messages.js'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
 function createWindow () {
   const window = new BrowserWindow({
-    width: 640,
-    height: 480,
+    width: 960,
+    height: 720,
     minWidth: 480,
     minHeight: 320,
     minimizable: true,

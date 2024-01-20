@@ -8,8 +8,8 @@ import { credentials, directions, globalSelectors, paths, messageSelectors } fro
 const options = {
   headless: false,
   slowMo: 50,
-  width: 800,
-  height: 600,
+  width: 1280,
+  height: 720,
   lang: 'en'
 }
 

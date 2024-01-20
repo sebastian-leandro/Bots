@@ -8,17 +8,21 @@ export async function * main (usersSet, page) {
       for (const btn of btns) {
         const profile = await btn.$x(invitationSelectors.profile)
         const name = await page.evaluate(el => el.innerText, profile[0])
+        let flag = false
         if (name && !usersSet.has(name) && counter < 100) {
           try {
             await btn.click()
+            yield { action: 'handleInvitation' }
             yield { action: 'handleWarning' }
             yield { action: 'handleUser', user: name }
             counter++
-            yield { action: 'handlePagination' }
+            flag = true
             yield { action: 'handleFinish', number: counter }
             yield { action: 'handleWait', user: name, number: counter }
           } catch (err) { yield { action: 'handleError', error: err.message } }
         }
+        const newbtns = await page.$$(invitationSelectors.btns)
+        if (!newbtns || !flag) yield { action: 'handlePagination' }
       }
     } catch (err) { yield { action: 'handleError', error: err.message } }
   }

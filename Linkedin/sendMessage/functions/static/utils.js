@@ -14,11 +14,25 @@ export async function handleWarning (page, modal, btn) {
   }
 }
 
+export async function sendInvitation (browser, page) {
+  try {
+    await wait(3000, 1000)
+    const confirm = await page.$(invitationSelectors.confirmBtn)
+    if (confirm) { await confirm.click() }
+    await wait(1000, 500)
+  } catch (err) {
+    console.error('There was an error trying to send the invitation. Error: ', err)
+    await browser.close()
+    process.exit(1)
+  }
+}
+
 // For the connect invitations to change the pagination.
 export async function handlePagination (browser, page) {
   try {
-    await page.click(invitationSelectors.paginationBtn)
-    await wait()
+    const paginationBtn = await page.$(invitationSelectors.paginationBtn)
+    if (paginationBtn) { await paginationBtn.click() }
+    await wait(3000, 1000)
   } catch (err) {
     console.error('There was an error trying to change the page. Error: ', err)
     await browser.close()

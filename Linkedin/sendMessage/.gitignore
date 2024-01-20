@@ -1,4 +1,5 @@
 node_modules
 cookies/cookies.json
-users/users.json
+users/invitation/users.json
+users/messages/users.json
 .env
