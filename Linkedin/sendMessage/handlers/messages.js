@@ -3,7 +3,7 @@ import { ipcMain } from 'electron'
 import { paths } from '../constants/variables.js'
 import { init, login, searchMessages } from '../functions/static/login.js'
 import { loadData, saveData } from '../functions/static/users.js'
-import { handleWarning, handleSendMessage, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
+import { handleInput, handleWarning, handleSendMessage, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
 import { main } from '../functions/messages/main.js'
 
 export async function handleMessage () {
@@ -17,13 +17,16 @@ export async function handleMessage () {
 
     for await (const state of messages) {
       switch (state.action) {
+        case 'handleInput':
+          await handleInput(page)
+          break
         case 'handleWarning':
           await handleWarning(page)
           break
         case 'handleSendMessage':
-          await handleSendMessage(state.user)
+          await handleSendMessage(browser, page, state.user)
           break
-        case 'handleUser':
+        case 'handleSave':
           await saveData(browser, state.user, messagesSet, paths.messagesUsers)
           break
         case 'handleFinish':

@@ -86,8 +86,13 @@ export async function searchMessages (browser, page) {
   try {
     await page.goto(directions.messages)
     await wait(2000, 1000)
-    await page.click(messageSelectors.btnFilter)
-    await wait(2000, 1000)
+    try {
+      const searchBtn = await page.$(messageSelectors.btnFilter)
+      await searchBtn.click()
+      await wait(2000, 1000)
+    } catch (err) {
+      console.error("searchBtn doesn't found. Error: ", err)
+    }
   } catch (err) {
     console.error(`There was a problem trying to search messages. Error: ${err}`)
     await browser.close()

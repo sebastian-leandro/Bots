@@ -1,4 +1,4 @@
-import { invitationSelectors } from '../../constants/variables.js'
+import { credentials, invitationSelectors, messageSelectors } from '../../constants/variables.js'
 import { wait, triggerFunction } from './timers.js'
 
 // In case we have a modal warning window we close the browser and notify about it.
@@ -40,9 +40,22 @@ export async function handlePagination (browser, page) {
   }
 }
 
+export async function handleInput (page) {
+  await wait(3000, 1000)
+  const users = await page.$$(messageSelectors.usersBtn)
+  if (users) { await users[0].click() }
+  await wait(3000, 1000)
+}
+
 // For the Message function.
 
-export async function handleSendMessage () {}
+export async function handleSendMessage (browser, page, user) {
+  const input = await page.$(messageSelectors.inputMessage)
+  if (input) { await input.type(`Hola buenos dias ${user}. ${credentials.message}`) }
+  const btn = await page.$(messageSelectors.btnMessage)
+  if (btn) { await btn.click() }
+  await wait(50000, 30000)
+}
 
 // A wait function with random waits.
 
