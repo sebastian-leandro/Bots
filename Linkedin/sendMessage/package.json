@@ -1,12 +1,13 @@
 {
   "name": "sendmessage",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -17,11 +18,32 @@
   },
   "devDependencies": {
     "electron": "^28.1.4",
+    "electron-builder": "^24.9.1",
     "standard": "^17.1.0"
   },
   "eslintConfig": {
     "extends": [
       "standard"
     ]
+  },
+  "build": {
+    "appId": "com.leandro.linkedin-tool",
+    "productName": "Linkedin Tool",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.js",
+      "app/**/*",
+      "functions/**/*",
+      "handlers/**/*",
+      "constants/**/*",
+      "cookies/**/*",
+      "users/**/*"
+    ],
+    "win": {
+      "target": "portable"
+    }
   }
+  
 }

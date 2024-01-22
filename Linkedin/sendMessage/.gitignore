@@ -3,3 +3,4 @@ cookies/cookies.json
 users/invitation/users.json
 users/message/users.json
 .env
+dist

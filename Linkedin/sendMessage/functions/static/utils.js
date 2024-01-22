@@ -51,7 +51,7 @@ export async function handleInput (page) {
 
 export async function handleSendMessage (browser, page, user) {
   const input = await page.$(messageSelectors.inputMessage)
-  if (input) { await input.type(`Hola buenos dias ${user}. ${credentials.message}`) }
+  if (input) { await input.type(`Hola buenos días ${user}. ${credentials.message}`) }
   const btn = await page.$(messageSelectors.btnMessage)
   if (btn) { await btn.click() }
   await wait(50000, 30000)
