@@ -10,16 +10,33 @@
 <body>
     <div class="wrapper">
       <section class="main">
-        <div class="container">
+
+      <div class="form" id="form">
+        <div>
+          <input class="input" type="text" id="username" placeholder="Username" name="username">
+        </div>
+        <div>
+          <input class="input" type="password" id="password" placeholder="Password" name="password">
+        </div>
+        <button class="button" id="login">Login</button>
+      </div>
+
+
+
+      <div class="choose hide" id="choose">
+        <div class="option-1">
           <button id="option-1">Mandar Solicitudes</button>
           <p>Mandar Solicitudes de seguimientos bajo un link suyo</p>
         </div>
-        <div class="container">
+        <div class="option-2">
           <button id="option-2">Mandar Mensajes</button>
           <p>Mandar mensajes a personas que a mandado solicitudes</p>
         </div>
+      </div>
       </section>
+
     </div>
+    
 
     <script src="./renderer.js"></script>
 </body>

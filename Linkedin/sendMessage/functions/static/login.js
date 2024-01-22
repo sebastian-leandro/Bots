@@ -6,7 +6,7 @@ import { wait } from './timers.js'
 import { credentials, directions, globalSelectors, paths, messageSelectors } from '../../constants/variables.js'
 
 const options = {
-  headless: false,
+  headless: true,
   slowMo: 50,
   width: 1280,
   height: 720,
@@ -44,13 +44,13 @@ async function isLoggedIn (page) {
   } catch (err) { return false }
 }
 
-export async function login (browser, page) {
+export async function login (browser, page, username, password) {
   const isLogged = await isLoggedIn(page)
   if (!isLogged) {
     if (credentials.username && credentials.password) {
       try {
-        await page.type(globalSelectors.login, credentials.username)
-        await page.type(globalSelectors.password, credentials.password)
+        await page.type(globalSelectors.login, username)
+        await page.type(globalSelectors.password, password)
         await page.keyboard.press('Enter')
         await wait()
         try {

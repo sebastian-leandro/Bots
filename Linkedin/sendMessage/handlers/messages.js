@@ -7,9 +7,9 @@ import { handleInput, handleWarning, handleSendMessage, handleWait, handleFinish
 import { main } from '../functions/messages/main.js'
 
 export async function handleMessage () {
-  ipcMain.on('messages', async () => {
+  ipcMain.on('messages', async (event, { username, password }) => {
     const { browser, page } = await init()
-    await login(browser, page)
+    await login(browser, page, username, password)
     await searchMessages(browser, page)
     const invitationsSet = await loadData(paths.invitationsUsers)
     const messagesSet = await loadData(paths.messagesUsers)

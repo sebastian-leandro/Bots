@@ -6,9 +6,9 @@ import { main } from '../functions/invitations/main.js'
 import { paths, invitationSelectors } from '../constants/variables.js'
 
 export async function handleInvitation () {
-  ipcMain.on('invitations', async () => {
+  ipcMain.on('invitations', async (event, { username, password }) => {
     const { browser, page } = await init()
-    await login(browser, page)
+    await login(browser, page, username, password)
     await search(browser, page)
     const invitationsSet = await loadData(paths.invitationsUsers)
     const invitations = main(invitationsSet, page)
