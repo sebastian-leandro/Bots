@@ -3,10 +3,10 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 import { wait } from './timers.js'
-import { credentials, directions, globalSelectors, paths, messageSelectors } from '../../constants/variables.js'
+import { directions, globalSelectors, paths, messageSelectors } from '../../constants/variables.js'
 
 const options = {
-  headless: true,
+  headless: false,
   slowMo: 50,
   width: 1280,
   height: 720,
@@ -47,24 +47,18 @@ async function isLoggedIn (page) {
 export async function login (browser, page, username, password) {
   const isLogged = await isLoggedIn(page)
   if (!isLogged) {
-    if (credentials.username && credentials.password) {
+    try {
+      await page.type(globalSelectors.login, username)
+      await page.type(globalSelectors.password, password)
+      await page.keyboard.press('Enter')
+      await wait()
       try {
-        await page.type(globalSelectors.login, username)
-        await page.type(globalSelectors.password, password)
-        await page.keyboard.press('Enter')
-        await wait()
-        try {
-          const cookiesStr = await page.cookies()
-          const cookies = JSON.stringify(cookiesStr)
-          await writeFile(paths.cookies, cookies, 'utf-8')
-        } catch (err) { console.error(`Could't save the cookies. Error: ${err}`) }
-      } catch (err) {
-        console.error(`There was a problem trying to login. Error: ${err}`)
-        await browser.close()
-        process.exit(1)
-      }
-    } else {
-      console.error("Username or password doesn't found inside the .env file")
+        const cookiesStr = await page.cookies()
+        const cookies = JSON.stringify(cookiesStr)
+        await writeFile(paths.cookies, cookies, 'utf-8')
+      } catch (err) { console.error(`Could't save the cookies. Error: ${err}`) }
+    } catch (err) {
+      console.error(`There was a problem trying to login. Error: ${err}`)
       await browser.close()
       process.exit(1)
     }

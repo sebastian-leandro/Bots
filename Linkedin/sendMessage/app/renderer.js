@@ -1,20 +1,25 @@
 const { ipcRenderer } = require('electron')
+const { existsSync } = require('fs')
 
 const $ = selector => document.getElementById(selector)
-
 let credentials = {}
 
-$('login').addEventListener('click', () => {
-  if ($('username').value === '' || $('password').value === '') {
-    $('username').placeholder = 'Username Required'
-    $('password').placeholder = 'Password Required'
-    return
-  }
-  credentials = { username: $('username').value, password: $('password').value }
-
+if (existsSync('./cookies/cookies.json')) {
   $('form').classList.add('hide')
   $('choose').classList.remove('hide')
-})
+} else {
+  $('login').addEventListener('click', () => {
+    if ($('username').value === '' || $('password').value === '') {
+      $('username').placeholder = 'Username Required'
+      $('password').placeholder = 'Password Required'
+      return
+    }
+    credentials = { username: $('username').value, password: $('password').value }
+
+    $('form').classList.add('hide')
+    $('choose').classList.remove('hide')
+  })
+}
 
 $('option-1').addEventListener('click', () => {
   ipcRenderer.send('invitations', credentials)
