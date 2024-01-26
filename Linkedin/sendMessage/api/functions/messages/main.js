@@ -1,4 +1,4 @@
-import { messageSelectors } from '../../constants/variables.js'
+import { messageSelectors } from '../../../constants/variables.js'
 import { wait } from '../static/timers.js'
 
 let counter = 0

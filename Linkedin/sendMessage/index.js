@@ -1,5 +1,5 @@
-import { handleInvitation } from './handlers/invitations.js'
-import { handleMessage } from './handlers/messages.js'
+import { handleInvitation } from './api/handlers/invitations.js'
+import { handleMessage } from './api/handlers/messages.js'
 import { app, BrowserWindow, ipcMain } from 'electron'
 
 function createWindow () {
@@ -10,10 +10,11 @@ function createWindow () {
     minHeight: 320,
     minimizable: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
-  window.loadFile('./app/index.html')
+  window.loadFile('./electron/index.html')
 }
 
 ipcMain.on('invitations', handleInvitation)

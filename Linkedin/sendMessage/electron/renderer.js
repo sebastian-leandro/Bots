@@ -3,25 +3,20 @@ const { existsSync } = require('fs')
 
 const $ = selector => document.getElementById(selector)
 let credentials = {}
-let search
+let input
 
-if (!existsSync('../cookies/cookies.json')) {
+if (existsSync('./cookies/cookies.json')) {
   $('form').classList.add('hide')
   $('choose').classList.remove('hide')
-  search = window.localStorage.getItem('search')
-  credentials = { search }
 } else {
   $('login').addEventListener('click', () => {
     const username = $('username').value
     const password = $('password').value
-    search = $('search').value
 
-    if (!username || !password || !search) {
+    if (!username || !password) {
       $('username').placeholder = 'Username is required'
       $('password').placeholder = 'Password is required'
-      $('search').placeholder = 'Search is required'
     } else {
-      window.localStorage.setItem('search', search || '')
       credentials = { username, password }
       $('form').classList.add('hide')
       $('choose').classList.remove('hide')
@@ -30,7 +25,17 @@ if (!existsSync('../cookies/cookies.json')) {
 }
 
 $('option-1').addEventListener('click', () => {
-  ipcRenderer.send('invitations', credentials)
+  $('choose').classList.add('hide')
+  $('inputSearch').classList.remove('hide')
+  $('searchBtn').addEventListener('click', () => {
+    if ($('search').value === '') {
+      $('search').placeholder = 'Search is required'
+    } else {
+      input = $('search').value
+      window.localStorage.setItem('search', input)
+      ipcRenderer.send('invitations', credentials, input)
+    }
+  })
 })
 
 $('option-2').addEventListener('click', () => {

@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 
-import { paths } from '../constants/variables.js'
+import { paths } from '../../constants/variables.js'
 import { init, login, searchMessages } from '../functions/static/login.js'
 import { loadData, saveData } from '../functions/static/users.js'
 import { handleInput, handleWarning, handleSendMessage, handleWait, handleFinish, handleError } from '../functions/static/utils.js'

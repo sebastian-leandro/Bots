@@ -27,6 +27,7 @@ export const globalSelectors = {
 
 export const invitationSelectors = {
   searchInput: 'input.search-global-typeahead__input',
+  persons: 'button.artdeco-pill.artdeco-pill--slate.artdeco-pill--choice.artdeco-pill--2.search-reusables__filter-pill-button.search-reusables__filter-pill-button',
   btns: "button[aria-label^='Invita a']:not([class*='msg-overlay'])",
   confirmBtn: 'button.artdeco-button.artdeco-button--2.artdeco-button--primary.ember-view.ml1',
   profile: '../../../div[2]/div[1]/div[1]/div/span/span/a/span/span[1]',

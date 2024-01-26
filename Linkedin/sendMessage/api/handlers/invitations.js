@@ -1,15 +1,15 @@
 import { ipcMain } from 'electron'
-import { init, login } from '../functions/static/login.js'
+import { init, login, search } from '../functions/static/login.js'
 import { loadData, saveData } from '../functions/static/users.js'
 import { handleWarning, sendInvitation, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
 import { main } from '../functions/invitations/main.js'
-import { paths, invitationSelectors } from '../constants/variables.js'
+import { paths, invitationSelectors } from '../../constants/variables.js'
 
 export async function handleInvitation () {
-  ipcMain.on('invitations', async (event, { username, password, search }) => {
+  ipcMain.on('invitations', async (event, { username, password }, input) => {
     const { browser, page } = await init()
     await login(browser, page, username, password)
-    await search(browser, page, search)
+    await search(browser, page, input)
     const invitationsSet = await loadData(paths.invitationsUsers)
     const invitations = main(invitationsSet, page)
 

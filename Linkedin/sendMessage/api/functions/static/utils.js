@@ -1,4 +1,4 @@
-import { credentials, invitationSelectors, messageSelectors } from '../../constants/variables.js'
+import { credentials, invitationSelectors, messageSelectors } from '../../../constants/variables.js'
 import { wait, triggerFunction } from './timers.js'
 
 // In case we have a modal warning window we close the browser and notify about it.
@@ -30,13 +30,21 @@ export async function sendInvitation (browser, page) {
 // For the connect invitations to change the pagination.
 export async function handlePagination (browser, page) {
   try {
+    await wait(3000, 1000)
     const paginationBtn = await page.$(invitationSelectors.paginationBtn)
     if (paginationBtn) { await paginationBtn.click() }
     await wait(3000, 1000)
   } catch (err) {
-    console.error('There was an error trying to change the page. Error: ', err)
-    await browser.close()
-    process.exit(1)
+    try {
+      await page.evaluate(() => {
+        window.scrollBy(0, 250)
+      })
+      await wait(3000, 1000)
+    } catch (err) {
+      console.error('There was an error trying to scroll down. Error: ', err)
+      await browser.close()
+      process.exit(1)
+    }
   }
 }
 
