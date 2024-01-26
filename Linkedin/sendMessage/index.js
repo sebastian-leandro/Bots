@@ -4,14 +4,13 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 
 function createWindow () {
   const window = new BrowserWindow({
-    width: 960,
-    height: 720,
+    width: 800,
+    height: 600,
     minWidth: 480,
     minHeight: 320,
     minimizable: true,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: true
     }
   })
   window.loadFile('./app/index.html')

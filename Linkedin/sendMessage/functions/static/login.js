@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 import { wait } from './timers.js'
-import { directions, globalSelectors, paths, messageSelectors } from '../../constants/variables.js'
+import { directions, globalSelectors, paths, messageSelectors, invitationSelectors } from '../../constants/variables.js'
 
 const options = {
   headless: false,
@@ -65,9 +65,10 @@ export async function login (browser, page, username, password) {
   }
 }
 
-export async function search (browser, page) {
+export async function search (browser, page, search) {
   try {
-    await page.goto(directions.search)
+    await page.type(invitationSelectors.searchInput, search)
+    await page.keyboard.press('Enter')
     await wait()
   } catch (err) {
     console.error(`There was a problem trying to search. Error: ${err}`)

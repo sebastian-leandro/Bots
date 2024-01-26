@@ -3,21 +3,29 @@ const { existsSync } = require('fs')
 
 const $ = selector => document.getElementById(selector)
 let credentials = {}
+let search
 
-if (existsSync('./cookies/cookies.json')) {
+if (!existsSync('../cookies/cookies.json')) {
   $('form').classList.add('hide')
   $('choose').classList.remove('hide')
+  search = window.localStorage.getItem('search')
+  credentials = { search }
 } else {
   $('login').addEventListener('click', () => {
-    if ($('username').value === '' || $('password').value === '') {
-      $('username').placeholder = 'Username Required'
-      $('password').placeholder = 'Password Required'
-      return
-    }
-    credentials = { username: $('username').value, password: $('password').value }
+    const username = $('username').value
+    const password = $('password').value
+    search = $('search').value
 
-    $('form').classList.add('hide')
-    $('choose').classList.remove('hide')
+    if (!username || !password || !search) {
+      $('username').placeholder = 'Username is required'
+      $('password').placeholder = 'Password is required'
+      $('search').placeholder = 'Search is required'
+    } else {
+      window.localStorage.setItem('search', search || '')
+      credentials = { username, password }
+      $('form').classList.add('hide')
+      $('choose').classList.remove('hide')
+    }
   })
 }
 
