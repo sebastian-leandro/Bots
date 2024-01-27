@@ -1,9 +1,10 @@
 import { ipcMain } from 'electron'
+
+import { paths, invitationSelectors } from '../../constants/variables.js'
 import { init, login, search } from '../functions/static/login.js'
 import { loadData, saveData } from '../functions/static/users.js'
 import { handleWarning, sendInvitation, handlePagination, handleWait, handleFinish, handleError } from '../functions/static/utils.js'
 import { main } from '../functions/invitations/main.js'
-import { paths, invitationSelectors } from '../../constants/variables.js'
 
 export async function handleInvitation () {
   ipcMain.on('invitations', async (event, { username, password }, input) => {
