@@ -9,8 +9,22 @@ export async function handleWarning (page, modal, btn) {
       await page.click(btn)
       await wait(3000, 1000)
     }
-  } catch (err) {
-    console.log('Modal Not Found')
+  } catch (err) {}
+}
+
+// A wait function with random waits.
+
+let trigger = 0
+let triggerValue = triggerFunction()
+
+export async function handleWait (user, counter) {
+  if (trigger !== 0 && trigger !== 1 && trigger % triggerValue === 0) {
+    await wait(1000000, 500000, user, counter)
+    triggerValue = triggerFunction()
+    trigger = 0
+  } else {
+    await wait(60000, 30000, user, counter)
+    trigger++
   }
 }
 
@@ -53,10 +67,16 @@ export async function handlePagination (browser, page) {
   }
 }
 
-export async function handleInput (page) {
-  await wait(3000, 1000)
-  const users = await page.$$(messageSelectors.usersBtn)
-  if (users) { await users[0].click() }
+export async function handleInput (browser, page) {
+  try {
+    await wait(3000, 1000)
+    const users = await page.$$(messageSelectors.usersBtn)
+    await users[0].click()
+  } catch (err) {
+    console.error('There was an error trying to click the user. Error: ', err)
+    await browser.close()
+    process.exit(1)
+  }
   await wait(3000, 1000)
 }
 
@@ -69,29 +89,19 @@ export async function handleSendMessage (browser, page, user, message) {
     const firstName = username[0]
     await input.type(`Hola buenos días ${firstName}. ${message}`)
     await wait(30000, 10000)
-    const btn = await page.$(messageSelectors.btnMessage)
-    if (btn) { await btn.click() }
-    await wait(50000, 30000)
+    try {
+      const btn = await page.$(messageSelectors.btnMessage)
+      await btn.click()
+      await wait(50000, 30000)
+    } catch (err) {
+      console.error('There was an error trying to send the message. Error: ', err)
+      await browser.close()
+      process.exit(1)
+    }
   } catch (err) {
     console.error('There was an error trying to send the message. Error: ', err)
     await browser.close()
     process.exit(1)
-  }
-}
-
-// A wait function with random waits.
-
-let trigger = 0
-let triggerValue = triggerFunction()
-
-export async function handleWait (user, counter) {
-  if (trigger !== 0 && trigger !== 1 && trigger % triggerValue === 0) {
-    await wait(1000000, 500000, user, counter)
-    triggerValue = triggerFunction()
-    trigger = 0
-  } else {
-    await wait(60000, 30000, user, counter)
-    trigger++
   }
 }
 

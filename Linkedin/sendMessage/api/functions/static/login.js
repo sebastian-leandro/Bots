@@ -7,7 +7,7 @@ import { directions, globalSelectors, paths, messageSelectors, invitationSelecto
 
 const options = {
   headless: false,
-  slowMo: 50,
+  slowMo: 75,
   width: 1280,
   height: 720,
   lang: 'en'
@@ -70,9 +70,12 @@ export async function search (browser, page, search) {
     await page.type(invitationSelectors.searchInput, search)
     await page.keyboard.press('Enter')
     await wait()
-    const personsBtn = await page.$(invitationSelectors.persons)
-    await personsBtn.click()
-    await wait(3000, 1000)
+    await page.evaluate((selectors) => {
+      const btn = Array.from(document.querySelectorAll(selectors)).find(btn => btn.innerText.trim() === 'Personas')
+      if (btn) {
+        btn.click()
+      } else { console.error("Person's btn doesn't found") }
+    }, invitationSelectors.persons)
   } catch (err) {
     console.error(`There was a problem trying to search. Error: ${err}`)
     await browser.close()
@@ -88,9 +91,7 @@ export async function searchMessages (browser, page) {
       const searchBtn = await page.$(messageSelectors.btnFilter)
       await searchBtn.click()
       await wait(2000, 1000)
-    } catch (err) {
-      console.error("searchBtn doesn't found. Error: ", err)
-    }
+    } catch (err) { console.error("searchBtn doesn't found. Error: ", err) }
   } catch (err) {
     console.error(`There was a problem trying to search messages. Error: ${err}`)
     await browser.close()

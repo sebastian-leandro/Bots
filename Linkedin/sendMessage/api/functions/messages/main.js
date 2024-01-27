@@ -14,13 +14,15 @@ export async function * main (invitationsSet, messagesSet, page) {
             yield { action: 'handleInput' }
             await wait(2000, 1000)
             const warning = await page.$(messageSelectors.invitationNotAccept)
-            if (warning === undefined || warning === null) {
-              yield { action: 'handleWarning' }
-              yield { action: 'handleMessage', user: invitation }
-              yield { action: 'handleSave', user: invitation, invitationSet: invitationsSet, messageSet: messagesSet }
-              yield { action: 'handleFinish', number: counter }
-              yield { action: 'handleWait', user: invitation, number: counter }
-              counter++
+            if (!warning) {
+              try {
+                yield { action: 'handleWarning' }
+                yield { action: 'handleMessage', user: invitation }
+                yield { action: 'handleSave', user: invitation, invitationSet: invitationsSet, messageSet: messagesSet }
+                yield { action: 'handleFinish', number: counter }
+                yield { action: 'handleWait', user: invitation, number: counter }
+                counter++
+              } catch (err) { yield { action: 'handleError', error: err.message } }
             } else {
               const newMessage = await page.$(messageSelectors.btnFilter)
               if (newMessage) { await newMessage.click() }

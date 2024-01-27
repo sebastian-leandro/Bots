@@ -19,7 +19,7 @@ export async function handleMessage () {
     for await (const state of messages) {
       switch (state.action) {
         case 'handleInput':
-          await handleInput(page)
+          await handleInput(browser, page)
           break
         case 'handleWarning':
           await handleWarning(page)
