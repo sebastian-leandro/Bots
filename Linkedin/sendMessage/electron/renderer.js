@@ -4,6 +4,7 @@ const { existsSync } = require('fs')
 const $ = selector => document.getElementById(selector)
 let credentials = {}
 let input
+let message
 
 if (existsSync('./cookies/cookies.json')) {
   $('form').classList.add('hide')
@@ -32,12 +33,20 @@ $('option-1').addEventListener('click', () => {
       $('search').placeholder = 'Search is required'
     } else {
       input = $('search').value
-      window.localStorage.setItem('search', input)
       ipcRenderer.send('invitations', credentials, input)
     }
   })
 })
 
 $('option-2').addEventListener('click', () => {
-  ipcRenderer.send('messages', credentials)
+  $('choose').classList.add('hide')
+  $('message').classList.remove('hide')
+  $('messageBtn').addEventListener('click', () => {
+    if ($('messageInput').value === '') {
+      $('messageInput').placeholder = 'Message is required'
+    } else {
+      message = $('messageInput').value
+      ipcRenderer.send('messages', credentials, message)
+    }
+  })
 })

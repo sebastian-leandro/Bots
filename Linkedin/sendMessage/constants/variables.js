@@ -39,7 +39,7 @@ export const messageSelectors = {
   btnFilter: 'a.ember-view.msg-conversations-container__compose-btn.artdeco-button.artdeco-button--circle.artdeco-button--tertiary.mr2.artdeco-button--muted',
   inputFilter: 'input.msg-connections-typeahead__search-field.msg-connections-typeahead__search-field--no-recipients.ml1.mv1.ph2',
   usersBtn: 'button.display-flex.flex-row.align-items-center.msg-connections-typeahead__search-result',
-  invitationNotAccept: 'a.app-aware-link.artdeco-button.artdeco-button--premium.artdeco-button--secondary.full-width.premium-upsell-link--long.card-upsell__cta-link',
+  invitationNotAccept: 'a.app-aware-link.artdeco-button.artdeco-button--premium.artdeco-button--secondary.full-width.premium-upsell-link--long',
   inputMessage: 'div.msg-form__contenteditable.t-14.t-black--light.t-normal.flex-grow-1.full-height.notranslate',
   btnMessage: 'button.msg-form__send-button.artdeco-button.artdeco-button--1'
 }

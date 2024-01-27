@@ -7,7 +7,8 @@ import { handleInput, handleWarning, handleSendMessage, handleWait, handleFinish
 import { main } from '../functions/messages/main.js'
 
 export async function handleMessage () {
-  ipcMain.on('messages', async (event, { username, password }) => {
+  ipcMain.on('messages', async (event, { username, password }, message) => {
+    console.log(message)
     const { browser, page } = await init()
     await login(browser, page, username, password)
     await searchMessages(browser, page)
@@ -23,8 +24,8 @@ export async function handleMessage () {
         case 'handleWarning':
           await handleWarning(page)
           break
-        case 'handleSendMessage':
-          await handleSendMessage(browser, page, state.user)
+        case 'handleMessage':
+          await handleSendMessage(browser, page, state.user, message)
           break
         case 'handleSave':
           await saveData(browser, state.user, messagesSet, paths.messagesUsers)

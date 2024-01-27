@@ -1,4 +1,4 @@
-import { credentials, invitationSelectors, messageSelectors } from '../../../constants/variables.js'
+import { invitationSelectors, messageSelectors } from '../../../constants/variables.js'
 import { wait, triggerFunction } from './timers.js'
 
 // In case we have a modal warning window we close the browser and notify about it.
@@ -32,19 +32,24 @@ export async function handlePagination (browser, page) {
   try {
     await wait(3000, 1000)
     const paginationBtn = await page.$(invitationSelectors.paginationBtn)
-    if (paginationBtn) { await paginationBtn.click() }
-    await wait(3000, 1000)
-  } catch (err) {
-    try {
-      await page.evaluate(() => {
-        window.scrollBy(0, 250)
-      })
-      await wait(3000, 1000)
-    } catch (err) {
-      console.error('There was an error trying to scroll down. Error: ', err)
-      await browser.close()
-      process.exit(1)
+    if (paginationBtn) {
+      await paginationBtn.click()
+    } else {
+      try {
+        await page.evaluate(() => {
+          window.scrollBy(0, 250)
+        })
+        await wait(3000, 1000)
+      } catch (err) {
+        console.error('There was an error trying to scroll down. Error: ', err)
+        await browser.close()
+        process.exit(1)
+      }
     }
+  } catch (err) {
+    console.error('There was an error. Error: ', err)
+    await browser.close()
+    process.exit(1)
   }
 }
 
@@ -57,12 +62,21 @@ export async function handleInput (page) {
 
 // For the Message function.
 
-export async function handleSendMessage (browser, page, user) {
-  const input = await page.$(messageSelectors.inputMessage)
-  if (input) { await input.type(`Hola buenos días ${user}. ${credentials.message}`) }
-  const btn = await page.$(messageSelectors.btnMessage)
-  if (btn) { await btn.click() }
-  await wait(50000, 30000)
+export async function handleSendMessage (browser, page, user, message) {
+  try {
+    const input = await page.$(messageSelectors.inputMessage)
+    const username = user.split(' ', 1)
+    const firstName = username[0]
+    await input.type(`Hola buenos días ${firstName}. ${message}`)
+    await wait(30000, 10000)
+    const btn = await page.$(messageSelectors.btnMessage)
+    if (btn) { await btn.click() }
+    await wait(50000, 30000)
+  } catch (err) {
+    console.error('There was an error trying to send the message. Error: ', err)
+    await browser.close()
+    process.exit(1)
+  }
 }
 
 // A wait function with random waits.
