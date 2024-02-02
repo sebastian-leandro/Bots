@@ -71,7 +71,8 @@ export async function search (browser, page, search) {
     await page.keyboard.press('Enter')
     await wait()
     await page.evaluate((selectors) => {
-      const btn = Array.from(document.querySelectorAll(selectors)).find(btn => btn.innerText.trim() === 'Personas')
+      const btns = Array.from(document.querySelectorAll(selectors))
+      const btn = btns.find(btn => btn.innerText.includes('2º'))
       if (btn) {
         btn.click()
       } else { console.error("Person's btn doesn't found") }

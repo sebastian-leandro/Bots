@@ -1,10 +1,23 @@
 const { ipcRenderer } = require('electron')
 const { existsSync } = require('fs')
+const fs = require('fs').promises
 
 const $ = selector => document.getElementById(selector)
 let credentials = {}
 let input
 let message
+
+const folder = './cookies'
+
+fs.readdir(folder)
+  .catch((err) => {
+    if (err.code === 'ENOENT') {
+      return fs.mkdir(folder, { recursive: true })
+    }
+    throw err
+  })
+  .then(() => console.log('La carpeta existe o fue creada exitosamente.'))
+  .catch((err) => console.error('Error:', err))
 
 if (existsSync('./cookies/cookies.json')) {
   $('form').classList.add('hide')
