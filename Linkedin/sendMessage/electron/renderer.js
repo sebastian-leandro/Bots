@@ -7,17 +7,17 @@ let credentials = {}
 let input
 let message
 
-const folder = './cookies'
+const folders = ['./cookies', './users', './users/invitation', './users/message']
 
-fs.readdir(folder)
-  .catch((err) => {
-    if (err.code === 'ENOENT') {
-      return fs.mkdir(folder, { recursive: true })
+async function createFolders () {
+  for (const folder of folders) {
+    if (!existsSync(folder)) {
+      await fs.mkdir(folder)
     }
-    throw err
-  })
-  .then(() => console.log('La carpeta existe o fue creada exitosamente.'))
-  .catch((err) => console.error('Error:', err))
+  }
+}
+
+createFolders()
 
 if (existsSync('./cookies/cookies.json')) {
   $('form').classList.add('hide')
