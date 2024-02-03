@@ -29,7 +29,7 @@ export async function handleInvitation () {
           await handlePagination(browser, page)
           break
         case 'handleWait':
-          await handleWait(state.user, state.number)
+          await handleWait(event, state.user, state.number)
           break
         case 'handleFinish':
           await handleFinish(browser, state.number)

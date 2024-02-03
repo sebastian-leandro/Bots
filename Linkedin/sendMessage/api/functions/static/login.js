@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
 import { wait } from './timers.js'
-import { directions, globalSelectors, paths, messageSelectors, invitationSelectors } from '../../../constants/variables.js'
+import { directions, globalSelectors, paths, messageSelectors } from '../../../constants/variables.js'
 
 const options = {
   headless: false,
@@ -67,16 +67,8 @@ export async function login (browser, page, username, password) {
 
 export async function search (browser, page, search) {
   try {
-    await page.type(invitationSelectors.searchInput, search)
-    await page.keyboard.press('Enter')
-    await wait()
-    await page.evaluate((selectors) => {
-      const btns = Array.from(document.querySelectorAll(selectors))
-      const btn = btns.find(btn => btn.innerText.includes('2º'))
-      if (btn) {
-        btn.click()
-      } else { console.error("Person's btn doesn't found") }
-    }, invitationSelectors.persons)
+    await page.goto(search)
+    await wait(null, 7500, 5000)
   } catch (err) {
     console.error(`There was a problem trying to search. Error: ${err}`)
     await browser.close()
@@ -87,7 +79,7 @@ export async function search (browser, page, search) {
 export async function searchMessages (browser, page) {
   try {
     await page.goto(directions.messages)
-    await wait(2000, 1000)
+    await wait(null, 2000, 1000)
     try {
       const searchBtn = await page.$(messageSelectors.btnFilter)
       await searchBtn.click()

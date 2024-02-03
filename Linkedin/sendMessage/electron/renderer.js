@@ -4,8 +4,8 @@ const fs = require('fs').promises
 
 const $ = selector => document.getElementById(selector)
 let credentials = {}
-let input
-let message
+let input = ''
+let message = ''
 
 const folders = ['./cookies', './users', './users/invitation', './users/message']
 
@@ -63,15 +63,16 @@ function setupOption1 () {
   $('option-1').addEventListener('click', () => {
     $('choose').classList.add('hide')
     $('inputSearch').classList.remove('hide')
+
     $('searchBtn').addEventListener('click', () => {
       if ($('search').value === '') {
-        $('search').placeholder = 'Search is required'
+        $('search').placeholder = 'Link to search is required'
       } else {
         input = $('search').value
+        displayLastTenUsers()
         $('inputSearch').classList.add('hide')
         $('grid-invitations').classList.remove('hide')
-        displayLastTenUsers()
-        ipcRenderer.send('invitations', credentials, input)
+        $('start').addEventListener('click', () => { ipcRenderer.send('invitations', credentials, input) })
       }
     })
   })
@@ -91,6 +92,14 @@ function setupOption2 () {
     })
   })
 }
+
+ipcRenderer.on('invitations-data', (event, data) => {
+  const { user, counter, minutes, seconds } = data
+  $('users').textContent = user
+  $('count').textContent = counter
+  $('minute').textContent = minutes
+  $('second').textContent = seconds
+})
 
 createFolders()
 setupLogin()

@@ -17,13 +17,13 @@ export async function handleWarning (page, modal, btn) {
 let trigger = 0
 let triggerValue = triggerFunction()
 
-export async function handleWait (user, counter) {
+export async function handleWait (event, user, counter) {
   if (trigger !== 0 && trigger !== 1 && trigger % triggerValue === 0) {
-    await wait(1000000, 500000, user, counter)
+    await wait(event, 1000000, 500000, user, counter)
     triggerValue = triggerFunction()
     trigger = 0
   } else {
-    await wait(60000, 30000, user, counter)
+    await wait(event, 60000, 30000, user, counter)
     trigger++
   }
 }

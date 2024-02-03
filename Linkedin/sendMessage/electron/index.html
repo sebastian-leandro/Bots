@@ -3,39 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="styles.css">
     <title>Linkedin Tools</title>
 </head>
-<body>
-    <div class="wrapper">
-      <section class="main">
+<body class="bg-gradient-to-br from-violet-400/50 via-pink-400/70 to-violet-950/30">
+    <div class="grid w-screen h-screen place-items-center">
+      <section>
 
-      <div class="form" id="form">
+      <div class="w-96 h-60 px-12 py-8 rounded-lg flex flex-col gap-8 items-center bg-slate-100" id="form">
         <div>
-          <input class="input" type="text" id="username" placeholder="Username" name="username">
+          <input class="w-full h-auto py-4 text-black bg-slate-300" type="text" id="username" placeholder="Username" name="username">
         </div>
         <div>
-          <input class="input" type="password" id="password" placeholder="Password" name="password">
+          <input class="w-full h-auto py-4 text-black bg-slate-300" type="password" id="password" placeholder="Password" name="password">
         </div>
         <button class="button" id="login">Login</button>
       </div>
 
 
 
-      <div class="choose hide" id="choose">
-        <div class="option-1">
-          <button id="option-1">Mandar Solicitudes</button>
-          <p>Mandar Solicitudes de seguimientos bajo un link suyo</p>
+      <div class="rounded-lg bg-white w-[480px] h-[320px] hide flex gap-x-8" id="choose">
+        <div class="flex flex-col px-4 py-2 h-full items-center gap-y-4 w-full justify-center">
+          <button class="button" id="option-1">Mandar Solicitudes</button>
+          <p class="text-center text-small font-light text-gray-500">Mandar Solicitudes de seguimientos bajo un link suyo</p>
         </div>
-        <div class="option-2">
-          <button id="option-2">Mandar Mensajes</button>
-          <p>Mandar mensajes a personas que a mandado solicitudes</p>
+        <div class="flex flex-col px-4 py-2 h-full gap-y-4 items-center w-full justify-center">
+          <button class="button" id="option-2">Mandar Mensajes</button>
+          <p class="text-center text-small font-light text-gray-500">Mandar mensajes a personas que a mandado solicitudes</p>
         </div>
       </div>
 
 
-      <div class="search hide" id="inputSearch">
-        <input class="input" type="text" id="search" placeholder="Search">
+      <div class="flex gap-x-4 w-full h-full justify-center items-center hide" id="inputSearch">
+        <input class="input" type="text" id="search" placeholder="Link">
         <button class="button" id="searchBtn">Search</button>
       </div>
 
@@ -44,24 +45,38 @@
         <button class="button" id="messageBtn">Send</button>
       </div>
 
-      <div class="grid-invitations hide" id="grid-invitations">
-        <div class="users-name card" id="user">
-          <h3 class="title">Users</h3>
-          <span id="users"></span>
+      <div class="grid-container hide" id="grid-invitations">
+        <div class="users card" id="user relative">
+          <div class="h-12 w-full absolute top-4 px-4">
+            <h3 class="title h-full">Last user followed</h3>
+          </div>
+          <span id="users">--</span>
         </div>
-        <div class="counter card">
-          <h3 class="title">Counter</h3>
-          <span id="count" class="count"></span>
+        <div class="counter card relative">
+          <div class="h-12 w-full absolute top-4 px-4">
+            <h3 class="title h-full">Counter</h3>
+          </div>
+          <span id="count" class="count">0</span>
         </div>
-        <div class="time card">
-          <h3 class="title">Waiting Time</h3>
-          <span id="time"></span>
+        <div class="time card relative">
+          <div class="h-12 w-full absolute top-4 px-4">
+            <h3 class="title h-full">Waiting Time</h3>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 8px; width: 100%; align-items: center;">
+            <p>Waiting <span id="minute">0</span> minutes and <span id="second">0</span> seconds</p>
+            
+          </div>
         </div>
-        <div class="users-list card">
-          <h3 class="title">Already Followed Users</h3>
-          <ul class="list" id="users-list">
+        <div class="list card relative">
+          <div class="h-12 w-full absolute top-4 px-4">
+            <h3 class="title h-full">Latest followed users</h3>
+          </div>
+          <ul class="grid grid-cols-2 gap-x-4 w-full h-full place-items-center" id="users-list">
             
           </ul>
+        </div>
+        <div class="w-full mx-auto">
+          <button class="button" id="start" class="button btn">Start</button>
         </div>
       </div>
 
