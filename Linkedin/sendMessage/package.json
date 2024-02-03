@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "appId": "com.leandro.linkedin-tool",
-    "productName": "Linkedin Tool",
+    "appId": "com.leandro.linkedin-script",
+    "productName": "LinkScript",
     "directories": {
       "output": "dist"
     },

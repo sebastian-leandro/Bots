@@ -96,9 +96,9 @@ function setupOption2 () {
 ipcRenderer.on('invitations-data', (event, data) => {
   const { user, counter, minutes, seconds } = data
   $('users').textContent = user
-  $('count').textContent = counter
-  $('minute').textContent = minutes
-  $('second').textContent = seconds
+  $('count').textContent = counter.toString().padStart(2, '0')
+  $('minute').textContent = minutes.toString().padStart(2, '0')
+  $('second').textContent = seconds.toString().padStart(2, '0')
 })
 
 createFolders()
