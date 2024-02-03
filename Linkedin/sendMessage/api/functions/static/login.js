@@ -8,7 +8,7 @@ import { directions, globalSelectors, paths, messageSelectors, invitationSelecto
 const options = {
   headless: false,
   slowMo: 75,
-  width: 1280,
+  width: 1028,
   height: 720,
   lang: 'en'
 }

@@ -15,7 +15,6 @@ export const paths = {
 
 export const directions = {
   main: 'https:linkedin.com',
-  search: process.env.SEARCH,
   messages: 'https://www.linkedin.com/messaging/?'
 }
 

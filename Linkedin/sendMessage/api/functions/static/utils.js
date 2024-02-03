@@ -42,16 +42,16 @@ export async function sendInvitation (browser, page) {
 }
 
 // For the connect invitations to change the pagination.
+
 export async function handlePagination (browser, page) {
   try {
-    await wait(3000, 1000)
     const paginationBtn = await page.$(invitationSelectors.paginationBtn)
     if (paginationBtn) {
       await paginationBtn.click()
     } else {
       try {
         await page.evaluate(() => {
-          window.scrollBy(0, 250)
+          window.scrollBy(0, 300)
         })
         await wait(3000, 1000)
       } catch (err) {
