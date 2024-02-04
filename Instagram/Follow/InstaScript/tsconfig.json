@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["express"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -20,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "main.js", "./.eslintrc.cjs", "./api/**/*.ts", "./types/**/*.d.ts", "./tailwind.config.js", "postcss.config.js", "vite.config.ts"],
+  "include": ["src", "main.js", "./.eslintrc.cjs", "./types/**/*.d.ts", "./tailwind.config.js", "./src/**/*.ts", "postcss.config.js", "vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json"}]
 }
