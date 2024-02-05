@@ -1,15 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   width: 100vw;
   min-height: 100vh;
-  background: #d6249f;
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
   display: grid;
+  font-family: 'Poppins', sans-serif;
   place-items: center;
+  background: url('bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .button {
@@ -47,4 +55,8 @@ body {
 
 .input:focus {
   border-color: #285AEB;
+}
+
+.error {
+  color: #f00;
 }

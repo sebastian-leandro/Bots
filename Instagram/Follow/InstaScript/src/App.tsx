@@ -1,10 +1,10 @@
-import { Login } from './components'
+import { Main } from './components'
 
 function App (): React.ReactNode {
   return (
     <>
       <main>
-        <Login />
+        <Main />
       </main>
     </>
   )

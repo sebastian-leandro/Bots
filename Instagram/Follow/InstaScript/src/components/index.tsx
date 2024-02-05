@@ -1,4 +1,6 @@
+import Modal from './Modal'
 import Login from './Login'
-import User from './User'
+import Info from './Info'
+import Main from './Main'
 
-export { Login, User }
+export { Modal, Main, Login, Info }

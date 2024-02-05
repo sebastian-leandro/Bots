@@ -11,7 +11,7 @@
     "electron": "electron ./main.js",
     "dist": "electron-builder",
     "main": "electron.ts",
-    "start": "ts-node ./src/api/server.ts"
+    "start": "node --loader ts-node/esm ./src/api/server.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
@@ -23,7 +23,7 @@
     "react-dom": "18.2.0"
   },
   "build": {
-    "appId": "com.example.myapp",
+    "appId": "com.instaScript.app",
     "productName": "InstaScript",
     "directories": {
       "output": "dist"
