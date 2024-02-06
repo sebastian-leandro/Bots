@@ -11,13 +11,14 @@
     "electron": "electron ./main.js",
     "dist": "electron-builder",
     "main": "electron.ts",
-    "start": "node --loader ts-node/esm ./src/api/server.ts"
+    "start": "node --loader ts-node/esm.mjs ./src/api/server.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
     "cors": "^2.8.5",
     "electron-builder": "24.9.1",
     "express": "^4.18.2",
+    "helmet": "^7.1.0",
     "puppeteer": "21.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

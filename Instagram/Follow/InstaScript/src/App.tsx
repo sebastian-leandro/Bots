@@ -3,7 +3,7 @@ import { Main } from './components'
 function App (): React.ReactNode {
   return (
     <>
-      <main>
+      <main className='w-full h-full'>
         <Main />
       </main>
     </>

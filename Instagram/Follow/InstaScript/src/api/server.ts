@@ -1,40 +1,65 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import express from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
+import { start } from '../functions/index.ts'
 
 const app = express()
+
+const config = {
+  USER: process.env.USER ?? '',
+  PASSWORD: process.env.PASSWORD ?? '',
+  HOST: process.env.HOST ?? ''
+}
+
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }))
-
-const port = 3001
-
+app.use(helmet())
 app.use(express.json())
 
+const validate = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<express.Response | undefined> => {
+  const { USER, PASSWORD, HOST } = config
+  if (USER.length < 3 || PASSWORD.length < 3 || HOST.length < 3) {
+    return res.status(400).send('Invalid input')
+  }
+  req.on('error', (err: any) => {
+    console.error(err)
+    res.status(500).send('Server failed to start')
+  })
+  next()
+  return undefined
+}
+
 app.post('/src/api/login', (req, res) => {
-  try {
-    const { username, password } = req.body
-
-    if (username.length < 5 || password.length < 5) {
-      return res.status(400).json({ message: 'Username or password must be at least 5 characters long.' })
-    }
-
-    res.status(200).json({ message: 'Login successful' })
-  } catch (error) {
-    console.error('Error during login:', error)
-    res.status(500).json({ message: 'Internal server error' })
+  const { username, password } = req.body
+  if (username && password) {
+    config.USER = username
+    config.PASSWORD = password
+    res.status(200).send('Login successful')
   }
 })
 
 app.post('/src/api/account', (req, res) => {
-  const { account } = req.body
-
-  if (account === '') return res.status(400).json({ message: 'account is empty' })
-
-  const responseData = { account }
-  res.json(responseData)
+  config.HOST = req.body.account
+  res.status(200).send('Account set')
 })
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`)
+app.post('/src/api/start', validate, async (req, res) => {
+  const { USER, PASSWORD, HOST } = config
+  const { active } = req.body
+  if (active) {
+    try {
+      await start(USER, PASSWORD, HOST)
+      res.status(200).send('Server started')
+    } catch (err) { res.status(500).send('Server failed to start') }
+  }
+})
+
+const PORT = 3001
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`)
 })
