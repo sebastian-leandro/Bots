@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(45deg, #f3ec78, #af4261);
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 300ms ease-in-out background-color;
+  background-color: rgb(40, 100, 219);
+  color: #FFFFFF;
+
+  &:hover {
+    background-color: #3a87ec;
+  }
+}
+
+.input {
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  outline: none;
+  transition: 300ms ease-in-out border-color;
+  font-size: 14px;
+  font-weight: 300;
+  &:focus {
+    border-color: #3f69b3;
+  }
+}
+
+.card {
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba($color: #FFFFFF, $alpha: 0.5);
+  backdrop-filter: blur(48px);
+  -webkit-backdrop-filter: blur(48px);
+  
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
