@@ -21,9 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "ts-node": {
-    "esm": true
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "main.js", "/api/*.ts", "api/server.js", "./.eslintrc.js", "./logic/**.ts", "logic/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".eslintrc.json", "/api**.ts", "src/**.ts", "src/**/*.ts"],
   "exclude": ["node_modules"]
 }

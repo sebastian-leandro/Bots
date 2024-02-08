@@ -1,6 +1,9 @@
-import Modal from "./Modal";
-import Login from "./Login";
-import Config from "./Config";
-import Main from "./Main";
+import Modal from './Modal'
+import Login from './Login'
+import Main from './Main'
 
-export {Modal, Login, Main, Config}
+export {
+  Modal,
+  Login,
+  Main
+}

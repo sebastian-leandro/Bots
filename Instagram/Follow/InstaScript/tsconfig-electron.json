@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es6",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  },
+  "include": ["main.ts"],
+  "exclude": ["node_modules", "**/*.tsbuildinfo"]
+}
