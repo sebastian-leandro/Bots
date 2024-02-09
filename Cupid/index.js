@@ -13,7 +13,8 @@
   const options = {
     headless: false,
     slowMo: 100,
-    args: ['--lang=en-US'],
+    args: ['--lang=en-US', '--window-size=1280,720'],
+    defaultViewport: { width: 1280, height: 720 }
   }
 
 
