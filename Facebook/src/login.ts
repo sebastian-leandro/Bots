@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs'
 import { selectors, paths } from '../constants/variables'
 import { randomTimer } from './timers'
 import { config } from 'dotenv'
-import { type Init } from '../types/types'
+import { type Init, type Cookie } from '../types/types'
 
 config()
 const EMAIL = process.env.EMAIL ?? ''
@@ -22,9 +22,8 @@ export async function init (): Promise<Init> {
   const browser = await puppeteer.launch(options)
   const page = await browser.newPage()
   if (existsSync(paths.cookiesPath)) {
-    const cookies = JSON.parse(await readFile(paths.cookiesPath, 'utf-8'))
+    const cookies: Cookie[] = JSON.parse(await readFile(paths.cookiesPath, 'utf-8'))
     for (const cookie of cookies) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await page.setCookie(cookie)
     }
   }

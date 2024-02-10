@@ -12,6 +12,11 @@ module.exports = {
       files: [
         '.eslintrc.{js,cjs}'
       ],
+      excludedFiles: [
+        'dist/**',
+        'postBuild.js',
+        'node_modules/**'
+      ],
       parserOptions: {
         sourceType: 'script',
         project: './tsconfig.json'

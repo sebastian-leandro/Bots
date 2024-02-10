@@ -1,31 +1,46 @@
 import { type Browser, type Page } from 'puppeteer'
 import { init, handleLogin, handleSearch } from './login'
+import { loadUser, saveUser } from './users'
+import { handleModal, handleScroll, handleMessage } from './utils'
 import { main } from './main'
+import { paths } from '../constants/variables'
+import { type AsyncGeneratorType } from '../types/types'
 
 async function start (): Promise<void> {
   const { browser, page }: { browser: Browser, page: Page } = await init()
   await handleLogin(browser, page)
   await handleSearch(browser, page)
+  const usersList: Set<string> = await loadUser(paths.usersPath)
+  const titlesList: Set<string> = await loadUser(paths.titlesPath)
 
-  const generator: AsyncGenerator<{ action: string, message?: string }, void, void> = main(page)
+  const generator: AsyncGenerator<AsyncGeneratorType, void, void> = main(page, usersList, titlesList)
 
   for await (const state of generator) {
     switch (state.action) {
-      case 'handleScroll':
-        await page.evaluate(() => { window.scrollBy(0, 300) })
+      case 'handleScroll': {
+        await handleScroll(page)
         break
-      case 'handleModal':
-        try {
-          const modal = await page.$("div[aria-label='Cerrar chat']")
-          if (modal !== null) {
-            await modal.click()
-          }
-        } catch (err) { console.error(err) }
+      }
+      case 'handleModal': {
+        await handleModal(page)
         break
-      case 'handleError':
+      }
+      case 'handleMessage': {
+        await handleMessage(page)
+        break
+      }
+      case 'saveUser' : {
+        if (typeof state.user === 'string' && typeof state.titles === 'string') {
+          await saveUser(paths.usersPath, usersList, state.user)
+          await saveUser(paths.titlesPath, titlesList, state.titles)
+        }
+        break
+      }
+      case 'handleError' : {
         console.error(state.message)
         await browser.close()
-        process.exit(1)
+        throw new Error(state.message)
+      }
     }
   }
 }
