@@ -17,7 +17,7 @@ export async function * main (page: Page, usersList: Set<string>, titlesList: Se
         const recover = await handleRecover(page) ?? { title: null, name: null }
         const { title, name }: { title: string | null, name: string | null } = recover as { title: string | null, name: string | null }
         if (title !== null && name !== null) {
-          if (!usersList.has(name) && !titlesList.has(title)) {
+          if (!usersList.has(name)) {
             yield { action: 'handleMessage' }
             yield { action: 'saveUser', usersList, titlesList, user: name, titles: title }
             counter++
