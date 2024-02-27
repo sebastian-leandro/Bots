@@ -12,7 +12,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
 
   const handleUser = (event: React.ChangeEvent<HTMLInputElement>): void => { setUser(event.target.value) }
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>): void => { setPassword(event.target.value) }
-  
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     const submitForm = async (): Promise<void> => {
@@ -33,7 +33,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
         } else {
           const data = await res.json()
           setError(true)
-          setErrorMessage(data?.message)
+          setErrorMessage(data?.message as string)
         }
       } catch (err) {
         setError(true)
@@ -45,31 +45,35 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
 
   return (
     <>
-      <section className='w-full h-full flex flex-col'>
-        <div className='flex flex-col w-full h-fit mb-2 items-center justify-center mt-16'>
+      <section className='w-full h-full flex flex-col z-10'>
+        <div className='flex flex-col w-full h-fit mb-1 items-center justify-center mt-16'>
           <h1 className='text-3xl font-semibold'>InstaScript</h1>
           <p className='text-base text-pretty mt-2'>Automatize Your Instagram Account</p>
         </div>
         <div className='grid place-items-center w-full h-full'>
-            <form onSubmit={handleSubmit} className='max-w-[420px] w-full h-full px-6 py-8 rounded-lg flex flex-col  bg-white/50 backdrop-blur-3xl shadow-sm shadow-white/20'>
+            <form onSubmit={handleSubmit} className='max-w-[430px] bg py-16 w-full h-auto px-6 rounded-lg flex flex-col'>
             <h2 className='text-2xl font-semibold mb-4'>Login</h2>
             <div className='w-full h-full flex flex-col gap-y-6 items-center justify-center'>
-              <input
-              type='text'
-              required
-              placeholder='Username'
-              onChange={handleUser}
-              className='input'
-              />
-              <input
-              type='password'
-              required
-              placeholder='Password'
-              onChange={handlePassword}
-              className='input'
-              />
+              <div className='relative inline-block h-fit w-full holder'>
+                <input
+                type='text'
+                required
+                placeholder='Username'
+                onChange={handleUser}
+                className='input'
+                />
+              </div>
+              <div className='relative inline-block h-fit w-full holder'>
+                <input
+                type='password'
+                required
+                placeholder='Password'
+                onChange={handlePassword}
+                className='input'
+                />
+              </div>
             </div>
-            <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login</Button> 
+            <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login</Button>
           </form>
         </div>
         { error && <Modal message={errorMessage} onClose={() => { setError(false) }} /> }

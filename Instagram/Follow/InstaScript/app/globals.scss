@@ -10,27 +10,68 @@
 }
 
 body {
-  background-color: var(--background-main);
+  background-color: #080707;
   color: var(--foreground-main);
+  position: relative;
 }
 
-.input {
+.gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 0.5rem;
-  border: none;
-  border-bottom: 1px solid var(--foreground-main);
-  color: var(--foreground-main);
-  background-color: var(--background-main);
-  font-size: 14px;
-  font-weight: 400;
-  border-radius: 16px;
-  outline: none;
-  transition: border-color 300ms ease-in-out;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(12, 12, 13, 0.2) 0%, #1A1A1A 100%);
 }
 
-.input:focus {
-  border-color: var(--sky-blue);
+.bg {
+  display: flex;
+  z-index: 10;
+  background-color: rgba(12, 12, 13, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.1);
 }
+
+.holder {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .input {
+    background-color: rgba($color: #11062f, $alpha: 0.5);
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    color: var(--foreground-main);
+  
+    .input::placeholder {
+      color: var(--foreground-main);
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: auto;
+    height: 1px;
+    border-radius: 16px;
+    background: linear-gradient(90deg, rgba(12, 12, 13, 0.2) 0%, #1A1A1A 100%);
+    transition: 500ms ease-in-out background;
+  }
+
+  &:hover::before {
+    background: var(--sky-blue);
+  }
+}
+
+
+
 
 @layer base {
   :root {
