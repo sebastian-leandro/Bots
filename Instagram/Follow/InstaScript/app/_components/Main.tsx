@@ -6,6 +6,7 @@ import { Actions, Login } from '.'
 
 function Main (): React.ReactNode {
   const [logged, setLogged] = useState<boolean>(false)
+  const [followOrUnfollow, setFollowOrUnfollow] = useState<boolean | undefined>(undefined)
   const [socket, setSocket] = useState<Socket | null>(null)
 
   useEffect(() => {
@@ -44,7 +45,9 @@ function Main (): React.ReactNode {
     <>
       <div className='gradient-bg'>
         {!logged && <Login logged={setLogged} />}
-        {logged && <Actions />}
+        {logged && <Actions setFollowOrUnfollow={setFollowOrUnfollow} />}
+        {followOrUnfollow !== null && followOrUnfollow === true && <></>}
+        {followOrUnfollow !== null && followOrUnfollow === false && <></>}
       </div>
     </>
   )

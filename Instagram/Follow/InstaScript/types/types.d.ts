@@ -3,6 +3,13 @@ interface ModalProps {
   onClose: (value: boolean) => void
 }
 
+interface InputProps {
+  search: (value: string) => void
+  handleFollow: (value: boolean) => void
+  setError: (value: boolean) => void
+  setErrorMessage: (value: string) => void
+}
+
 interface TimerProps {
   max?: number
   min?: number
@@ -26,4 +33,4 @@ interface CookiesProps {
   sourcePort?: number
 }
 
-export type { ModalProps, TimerProps, CookiesProps }
+export type { ModalProps, InputProps, TimerProps, CookiesProps }

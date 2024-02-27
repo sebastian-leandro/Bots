@@ -1,6 +1,5 @@
-import { ModalProps } from '@/types/types'
+import { type ModalProps } from '@/types/types'
 import { Button } from './ui/button'
-
 
 function Modal ({ message, onClose }: ModalProps): React.ReactNode {
   return (

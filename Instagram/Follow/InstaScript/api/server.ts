@@ -44,11 +44,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/actions', async (req, res) => {
-  const { action, input } = req.body
-  if (action === 'follow') {
-    if (input !== null && typeof input === 'string') await follow(input)
-  }
-  if (action === 'unfollow') { await unfollow() }
+  const { action } = req.body
+  if (action === 'follow') res.status(200).json({ follow: true })
+  if (action === 'unfollow') res.status(200).json({ follow: false })
 })
 
 expressApp.use('/', router)

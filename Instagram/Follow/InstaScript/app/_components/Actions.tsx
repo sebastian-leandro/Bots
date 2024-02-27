@@ -3,25 +3,41 @@ import { useState } from 'react'
 
 import { Button } from './ui/button'
 import Modal from './Modal'
+import Input from './Input'
 
-function Actions (): React.ReactNode {
+function Actions ({ setFollowOrUnfollow }: { setFollowOrUnfollow: (value: boolean) => void }): React.ReactNode {
+  const [searchInput, setSearchInput] = useState<string>('')
+  const [action, setAction] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [follow, setFollow] = useState<boolean | undefined>(undefined)
 
   const performAction = async (action: string): Promise<void> => {
     const res = await fetch('http://localhost:1234/actions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action })
+      body: JSON.stringify({ action, searchInput })
     })
     if (!res.ok) throw new Error('Failed to perform action')
+    const data = await res.json()
+    if (data?.follow === true) {
+      setFollow(true)
+      setFollowOrUnfollow(true)
+    } else if (data?.follow === false) {
+      setFollow(false)
+      setFollowOrUnfollow(false)
+    } else {
+      setError(true)
+      setErrorMessage('An error occured. Please try again.')
+    }
   }
 
   const handleAction = async (event: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    const action = event.currentTarget.dataset.action
+    const target = event.currentTarget.dataset.action
     try {
-      if (action !== null && typeof action === 'string') {
-        await performAction(action)
+      if (target !== null && typeof target === 'string') {
+        setAction(true)
+        await performAction(target)
       } else {
         throw new Error('Invalid action')
       }
@@ -47,6 +63,7 @@ function Actions (): React.ReactNode {
             <Button data-action='unfollow' variant={'default'} onClick={handleAction} className='mt-8 transition-colors duration-300'>Unfollow</Button>
           </div>
         </div>
+        {follow !== null && <Input search={() => setSearchInput} handleFollow={setFollowOrUnfollow} setError={setError} setErrorMessage={setErrorMessage} />}
         {error && <Modal onClose={setError} message={errorMessage} />}
       </section>
 
