@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# project
+/dist/
+/dist/api
+/dist/main.js
+/cookies

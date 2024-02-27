@@ -28,7 +28,8 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
           body: JSON.stringify({ user, password })
         })
         if (res.ok) {
-          setError(false)
+          setError(true)
+          setErrorMessage('Successfully logged.')
           logged(true)
         } else {
           const data = await res.json()
@@ -37,7 +38,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
         }
       } catch (err) {
         setError(true)
-        setErrorMessage('An error occurred. Please try again later.')
+        setErrorMessage(`There was an error. Error: ${err as string}`)
       }
     }
     submitForm().catch(err => { console.error(err) })

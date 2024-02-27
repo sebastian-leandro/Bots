@@ -1,34 +1,77 @@
-import express, { type Application } from 'express'
+import express, { Router } from 'express'
 import cors from 'cors'
-
+import http from 'http'
+import { Server as SocketServer } from 'socket.io'
 import { existsSync } from 'fs'
 
-const router = express.Router()
+import { login } from '@/src/functions/login.js'
+import { follow, unfollow } from '@/src/index.js'
 
+const PORT = process.env.PORT ?? 1234
 const options = {
   origin: 'http://localhost:3000',
   credentials: true
 }
 
-router.use(cors(options))
+const expressApp = express()
+expressApp.use(cors(options))
+expressApp.use(express.json())
+
+const router = Router()
 
 router.get('/logged', (req, res) => {
-  const path = process.cwd() + '/src/cookies/cookies.json'
+  const path = process.cwd() + '/cookies/cookies.json'
   if (existsSync(path)) {
-    res.status(200).json({ logged: true })
-  } else {
-    res.status(200).json({ logged: false })
+    return res.status(200).json({ logged: true })
+  }
+  return res.status(200).json({ logged: false })
+})
+
+router.post('/login', async (req, res) => {
+  const { user, password } = req.body
+  if (typeof user !== 'string' || typeof password !== 'string') {
+    res.status(400).json('Invalid type of data.')
+    return
+  }
+  try {
+    const logged = await login(user, password)
+    if (logged) {
+      res.status(200).json({ logged: true })
+    } else {
+      res.status(400).json({ logged: false, message: 'Invalid Username or Password, Try again.' })
+    }
+  } catch (error) { res.status(500).json({ error: 'Login failed' }) }
+})
+
+router.post('/actions', async (req, res) => {
+  const { action, input } = req.body
+  if (action === 'follow') {
+    if (input !== null && typeof input === 'string') await follow(input)
+  }
+  if (action === 'unfollow') { await unfollow() }
+})
+
+expressApp.use('/', router)
+
+const httpServer = http.createServer(expressApp)
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 })
 
-router.post('/login', (req, res) => {
-  try {
-    const { user, password } = req.body
-    if (!user || !password) { return res.status(400).json({ message: 'Invalid request.' }) }
-    return res.status(200).json({ message: 'Logged in.' })
-  } catch (err) { res.status(500).json({ message: 'An error occurred. Please try again later.' }) }
+io.on('connection', (socket) => {
+  console.log('New client connected ', socket.id)
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnect', socket.id)
+  })
 })
 
-export function attachRoutes (app: Application): void {
-  app.use('/', router)
+export function startServer (): void {
+  httpServer.listen(PORT, () => {
+    console.log('Server running at port: ', PORT)
+  })
 }

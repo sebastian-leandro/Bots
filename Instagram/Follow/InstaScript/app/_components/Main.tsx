@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { io, type Socket } from 'socket.io-client'
 
-import { Login } from '.'
+import { Actions, Login } from '.'
 
 function Main (): React.ReactNode {
   const [logged, setLogged] = useState<boolean>(false)
@@ -44,6 +44,7 @@ function Main (): React.ReactNode {
     <>
       <div className='gradient-bg'>
         {!logged && <Login logged={setLogged} />}
+        {logged && <Actions />}
       </div>
     </>
   )

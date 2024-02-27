@@ -1,17 +1,15 @@
-var _a;
-import express from 'express';
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { attachRoutes } from './api/server.js';
+import { startServer } from './api/server.js';
 const options = {
     width: 800,
     height: 600,
     webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: false,
+        contextIsolation: true
     }
 };
-const PORT = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 1234;
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow(options);
@@ -21,13 +19,8 @@ function createWindow() {
     mainWindow.loadURL(startUrl).catch(err => { console.error(err); });
     mainWindow.on('closed', () => { mainWindow = null; });
 }
-const expressApp = express();
-expressApp.use(express.json());
-attachRoutes(expressApp);
-const server = expressApp.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
 app.whenReady().then(() => {
+    startServer();
     app.on('activate', () => {
         if (mainWindow === null) {
             createWindow();
@@ -35,7 +28,6 @@ app.whenReady().then(() => {
     });
 }).catch(err => { console.error(err); });
 app.on('window-all-closed', () => {
-    server.close();
     if (process.platform !== 'darwin') {
         app.quit();
     }
