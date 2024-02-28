@@ -20,10 +20,10 @@ function Actions ({ setFollowOrUnfollow }: { setFollowOrUnfollow: (value: boolea
     })
     if (!res.ok) throw new Error('Failed to perform action')
     const data = await res.json()
-    if (data?.follow === true) {
+    if (data?.follow === 'follow') {
       setFollow(true)
       setFollowOrUnfollow(true)
-    } else if (data?.follow === false) {
+    } else if (data?.follow === 'unfollow') {
       setFollow(false)
       setFollowOrUnfollow(false)
     } else {

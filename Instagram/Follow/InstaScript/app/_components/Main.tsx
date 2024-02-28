@@ -14,12 +14,8 @@ function Main (): React.ReactNode {
       try {
         const res = await fetch('http://localhost:1234/logged')
         const data = await res.json()
-        if (data?.logged === true) {
-          setLogged(true)
-        }
-      } catch (err) {
-        console.error(err)
-      }
+        if (data?.logged === true) setLogged(true)
+      } catch (err) { console.error(err) }
     }
     checkLogin().catch(err => { console.error(err) })
   }, [])

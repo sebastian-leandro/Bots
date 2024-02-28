@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     'react'
   ],
-  ignorePatterns: ['dist/**', 'extension.js'],
+  ignorePatterns: ['dist/**', 'extension.js', 'tailwind.config.js'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-misused-promises': ['error', {

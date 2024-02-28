@@ -4,8 +4,8 @@ import http from 'http'
 import { Server as SocketServer } from 'socket.io'
 import { existsSync } from 'fs'
 
-import { login } from '@/src/functions/login.js'
-import { follow, unfollow } from '@/src/index.js'
+import { login } from '../src/functions/login.js'
+import { follow, unfollow } from '../src/index.js'
 
 const PORT = process.env.PORT ?? 1234
 const options = {
@@ -45,8 +45,43 @@ router.post('/login', async (req, res) => {
 
 router.post('/actions', async (req, res) => {
   const { action } = req.body
-  if (action === 'follow') res.status(200).json({ follow: true })
-  if (action === 'unfollow') res.status(200).json({ follow: false })
+
+  try {
+    switch (action) {
+      case 'follow': {
+        res.status(200).json({ follow: 'follow' })
+        break
+      }
+      case 'unfollow': {
+        res.status(200).json({ follow: 'unfollow' })
+        break
+      }
+      case 'like': {
+        res.status(200).json({ follow: 'like' })
+        break
+      }
+      case 'message': {
+        res.status(200).json({ follow: 'message' })
+        break
+      }
+      default: {
+        res.status(400).json({ message: 'Invalid Action' })
+      }
+    }
+  } catch (err) { res.status(500).json({ message: err }) }
+})
+
+router.post('/follow', async (req, res) => {
+  const { input } = req.body
+  try {
+    if (typeof input === 'string') await follow(input)
+  } catch (err) { res.status(500).json({ error: err as string }) }
+})
+
+router.post('/unfollow', async (req, res) => {
+  try {
+    await unfollow()
+  } catch (err) { res.status(500).json({ error: err as string }) }
 })
 
 expressApp.use('/', router)

@@ -2,9 +2,10 @@
 import { useState } from 'react'
 
 import { Button } from './ui/button'
-import { Modal } from '.'
+import { Modal, Loader } from '.'
 
 function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNode {
+  const [loading, setLoading] = useState<boolean>(false)
   const [user, setUser] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<boolean>(false)
@@ -14,6 +15,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>): void => { setPassword(event.target.value) }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    setLoading(true)
     event.preventDefault()
     const submitForm = async (): Promise<void> => {
       if (user.length < 4 || password.length < 4) {
@@ -28,15 +30,16 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
           body: JSON.stringify({ user, password })
         })
         if (res.ok) {
-          setError(true)
-          setErrorMessage('Successfully logged.')
+          setLoading(false)
           logged(true)
         } else {
           const data = await res.json()
+          setLoading(false)
           setError(true)
           setErrorMessage(data?.message as string)
         }
       } catch (err) {
+        setLoading(false)
         setError(true)
         setErrorMessage(`There was an error. Error: ${err as string}`)
       }
@@ -77,6 +80,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
             <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login</Button>
           </form>
         </div>
+        { loading && <Loader /> }
         { error && <Modal message={errorMessage} onClose={() => { setError(false) }} /> }
       </section>
     </>
