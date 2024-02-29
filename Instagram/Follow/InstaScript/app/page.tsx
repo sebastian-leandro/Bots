@@ -1,4 +1,4 @@
-import { Main } from "./_components"
+import { Main } from './_components'
 
 export default function Home (): React.ReactNode {
   return (

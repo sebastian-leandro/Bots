@@ -7,7 +7,7 @@ import Input from './Input'
 
 function Actions ({ setFollowOrUnfollow }: { setFollowOrUnfollow: (value: boolean) => void }): React.ReactNode {
   const [searchInput, setSearchInput] = useState<string>('')
-  const [action, setAction] = useState<boolean>(false)
+  const [action, setAction] = useState<boolean | undefined>(undefined)
   const [error, setError] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [follow, setFollow] = useState<boolean | undefined>(undefined)
@@ -63,7 +63,7 @@ function Actions ({ setFollowOrUnfollow }: { setFollowOrUnfollow: (value: boolea
             <Button data-action='unfollow' variant={'default'} onClick={handleAction} className='mt-8 transition-colors duration-300'>Unfollow</Button>
           </div>
         </div>
-        {follow !== null && <Input search={() => setSearchInput} handleFollow={setFollowOrUnfollow} setError={setError} setErrorMessage={setErrorMessage} />}
+        {follow !== undefined && <Input search={() => setSearchInput} handleFollow={setFollowOrUnfollow} setError={setError} setErrorMessage={setErrorMessage} />}
         {error && <Modal onClose={setError} message={errorMessage} />}
       </section>
 

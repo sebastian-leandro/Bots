@@ -80,7 +80,7 @@ function Login ({ logged }: { logged: (value: boolean) => void }): React.ReactNo
             <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login</Button>
           </form>
         </div>
-        { loading && <Loader /> }
+        { loading && <Loader text='Loading ...' /> }
         { error && <Modal message={errorMessage} onClose={() => { setError(false) }} /> }
       </section>
     </>

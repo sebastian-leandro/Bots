@@ -31,8 +31,12 @@ async function loadCookies (page: Page): Promise<boolean> {
   return false
 }
 
+const options = {
+  slowMo: 50,
+  args: ['--lang=en-US']
+}
 export async function login (user: string, password: string): Promise<boolean> {
-  const browser = await puppeteer.launch({ slowMo: 50, args: ['--lang=en-US'] })
+  const browser = await puppeteer.launch(options)
   const page = await browser.newPage()
   await page.goto(directions.mainUrl)
   await waitTime()
