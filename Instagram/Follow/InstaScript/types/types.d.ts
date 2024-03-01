@@ -1,3 +1,8 @@
+interface LoginProps {
+  logged: (value: boolean) => void
+  setProfile: (value: string) => void
+}
+
 interface ModalProps {
   message: string
   onClose: (value: boolean) => void
@@ -33,4 +38,4 @@ interface CookiesProps {
   sourcePort?: number
 }
 
-export type { ModalProps, InputProps, TimerProps, CookiesProps }
+export type { LoginProps, ModalProps, InputProps, TimerProps, CookiesProps }

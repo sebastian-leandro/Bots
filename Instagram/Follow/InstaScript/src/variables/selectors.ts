@@ -11,7 +11,8 @@ export const paths = {
 export const selectors = {
   loginEmail: "input[aria-label='Phone number, username, or email']",
   loginPassword: "input[aria-label='Password']",
-  isLogin: 'section._aa55'
+  isLogin: 'section._aa55',
+  profileImg: 'img._aadp'
 }
 
 export const directions = {

@@ -1,13 +1,17 @@
 import express, { Router } from 'express'
+import type { Request, Response } from 'express'
+import { body, validationResult } from 'express-validator'
 import cors from 'cors'
-import http from 'http'
-import { Server as SocketServer } from 'socket.io'
-import { existsSync } from 'fs'
+import http from 'node:http'
+import { existsSync, unlink } from 'node:fs'
+import { join } from 'node:path'
 
 import { login } from '../src/functions/login.js'
-import { follow, unfollow } from '../src/index.js'
 
 const PORT = process.env.PORT ?? 1234
+const Cookiepath: string = join(process.cwd(), 'cookies', 'cookies.json')
+const imagePath: string = join(process.cwd(), 'public', 'assets', 'profile.jpg')
+
 const options = {
   origin: 'http://localhost:3000',
   credentials: true
@@ -20,88 +24,65 @@ expressApp.use(express.json())
 const router = Router()
 
 router.get('/logged', (req, res) => {
-  const path = process.cwd() + '/cookies/cookies.json'
-  if (existsSync(path)) {
+  if (existsSync(Cookiepath)) {
     return res.status(200).json({ logged: true })
   }
   return res.status(200).json({ logged: false })
 })
 
-router.post('/login', async (req, res) => {
-  const { user, password } = req.body
-  if (typeof user !== 'string' || typeof password !== 'string') {
-    res.status(400).json('Invalid type of data.')
-    return
+router.get('/logout', (req, res) => {
+  try {
+    Promise.all([
+      new Promise<void>((resolve, reject) => {
+        unlink(Cookiepath, (err) => {
+          if (err !== null) reject(err)
+          else resolve()
+        })
+      }).catch((err) => { console.error(err) }),
+      new Promise<void>((resolve, reject) => {
+        unlink(imagePath, (err) => {
+          if (err !== null) reject(err)
+          else resolve()
+        })
+      }).catch((err) => { console.error(err) })
+    ]).then(() => {
+      return res.status(200).json({ message: 'Logout Successful' })
+    }).catch((err) => {
+      console.error(err)
+      return res.status(500).json({ message: 'Logout Failed' })
+    })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ error: 'There was a problem. Try again' })
   }
-  try {
-    const logged = await login(user, password)
-    if (logged) {
-      res.status(200).json({ logged: true })
-    } else {
-      res.status(400).json({ logged: false, message: 'Invalid Username or Password, Try again.' })
-    }
-  } catch (error) { res.status(500).json({ error: 'Login failed' }) }
 })
 
-router.post('/actions', async (req, res) => {
-  const { action } = req.body
+router.post('/login', [
+  body('username').trim().escape(),
+  body('password').trim().escape()
+], async (req: Request, res: Response) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+  const { username, password } = req.body
+  if (typeof username !== 'string' || typeof password !== 'string' || username.length < 3 || password.length < 3) {
+    return res.status(400).json({ message: 'Invalid Username or Password. Try Again' })
+  }
 
   try {
-    switch (action) {
-      case 'follow': {
-        res.status(200).json({ follow: 'follow' })
-        break
-      }
-      case 'unfollow': {
-        res.status(200).json({ follow: 'unfollow' })
-        break
-      }
-      case 'like': {
-        res.status(200).json({ follow: 'like' })
-        break
-      }
-      case 'message': {
-        res.status(200).json({ follow: 'message' })
-        break
-      }
-      default: {
-        res.status(400).json({ message: 'Invalid Action' })
-      }
-    }
-  } catch (err) { res.status(500).json({ message: err }) }
-})
-
-router.post('/follow', async (req, res) => {
-  const { input } = req.body
-  try {
-    if (typeof input === 'string') await follow(input)
-  } catch (err) { res.status(500).json({ error: err as string }) }
-})
-
-router.post('/unfollow', async (req, res) => {
-  try {
-    await unfollow()
-  } catch (err) { res.status(500).json({ error: err as string }) }
+    const loggedIn = await login(username, password)
+    if (loggedIn === true) return res.status(200).json({ logged: true, message: 'Login succesful' })
+    else return res.status(400).json({ logged: false, message: 'Invalid username or password' })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ loggedIn: false, message: 'There was a problem. Please try again' })
+  }
 })
 
 expressApp.use('/', router)
 
 const httpServer = http.createServer(expressApp)
-const io = new SocketServer(httpServer, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-})
-
-io.on('connection', (socket) => {
-  console.log('New client connected ', socket.id)
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnect', socket.id)
-  })
-})
 
 export function startServer (): void {
   httpServer.listen(PORT, () => {

@@ -1,4 +1,4 @@
-import { type TimerProps } from '@/types/types'
+import { type TimerProps } from '../../types/types'
 
 const timer = (max: number, min: number): number => {
   let rand: number = 0
