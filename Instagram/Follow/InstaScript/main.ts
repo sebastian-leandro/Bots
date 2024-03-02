@@ -4,8 +4,11 @@ import { fileURLToPath } from 'url'
 import { startServer } from './api/server.js'
 
 const options = {
-  width: 800,
-  height: 600,
+  width: 960,
+  height: 720,
+  minWidth: 720,
+  minHeight: 580,
+  resizable: true,
   webPreferences: {
     nodeIntegration: false,
     contextIsolation: true

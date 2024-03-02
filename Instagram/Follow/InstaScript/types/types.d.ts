@@ -1,11 +1,23 @@
 interface LoginProps {
+  username: string
+  password: string
+  error: boolean
+  success: boolean
+  message: string
+  loading: boolean
+  setUsername: (value: string) => void
+  setPassword: (value: string) => void
+  setMessage: (value: string) => void
+  setSuccess: (value: boolean) => void
+  setError: (value: boolean) => void
+  setLoader: (value: boolean) => void
   logged: (value: boolean) => void
-  setProfile: (value: string) => void
 }
 
 interface ModalProps {
   message: string
-  onClose: (value: boolean) => void
+  onErrorClose: (value: boolean) => void
+  onSuccessClose: (value: boolean) => void
 }
 
 interface InputProps {

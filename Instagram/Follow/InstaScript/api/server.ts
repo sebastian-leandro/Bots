@@ -7,6 +7,8 @@ import { existsSync, unlink } from 'node:fs'
 import { join } from 'node:path'
 
 import { login } from '../src/functions/login.js'
+import { follow } from '@/src/process/follow.js'
+import { unfollow } from '@/src/process/unfollow.js'
 
 const PORT = process.env.PORT ?? 1234
 const Cookiepath: string = join(process.cwd(), 'cookies', 'cookies.json')
@@ -77,6 +79,30 @@ router.post('/login', [
   } catch (err) {
     console.error(err)
     return res.status(500).json({ loggedIn: false, message: 'There was a problem. Please try again' })
+  }
+})
+
+router.post('/action', async (req, res) => {
+  const { action } = req.body
+  if (typeof action !== 'string') return res.status(400).json({ message: 'Invalid action' })
+  try {
+    await login()
+    switch (action) {
+      case 'follow': {
+        await follow()
+        break
+      }
+      case 'unfollow': {
+        await unfollow()
+        break
+      }
+      default: {
+        return res.status(400).json({ message: 'Invalid action' })
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ message: 'There was a problem. Please try again' })
   }
 })
 

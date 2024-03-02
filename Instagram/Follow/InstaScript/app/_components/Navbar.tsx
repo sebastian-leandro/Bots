@@ -15,7 +15,7 @@ function Navbar ({ username, logged }: { username: string, logged: (value: boole
   }
 
   return (
-      <nav className='fixed top-0 left-0 w-full py-6 px-4 flex items-center justify-between bg-black/40'>
+      <nav className='fixed top-0 left-0 w-full py-2 px-4 flex items-center justify-between bg-black/40'>
         <div className='w-full flex items-center h-full justify-center'>
           <h3 className='text-2xl font-medium'>InstaScript</h3>
         </div>

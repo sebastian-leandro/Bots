@@ -1,13 +1,18 @@
 import { type ModalProps } from '@/types/types'
 import { Button } from './ui/button'
 
-function Modal ({ message, onClose }: ModalProps): React.ReactNode {
+function Modal ({ message, onErrorClose, onSuccessClose }: ModalProps): React.ReactNode {
+  const handleClose = (): void => {
+    onErrorClose(false)
+    onSuccessClose(false)
+  }
+
   return (
     <>
       <div className='w-full h-full absolute top-0 left-0 z-50 grid place-items-center bg-black/40 transition-all duration-300'>
-        <div className='max-w-[360px] px-4 py-8 text-center w-full h-auto rounded-lg bg-white/50 backdrop-blur-3xl shadow-sm shadow-white/50 flex flex-col justify-center items-center gap-y-4'>
-          <p className='text-base font-normal'>{message}</p>
-          <Button onClick={() => { onClose(false) }} variant={'default'}>Close</Button>
+        <div className='max-w-[360px] px-4 py-8 text-center w-full h-auto rounded-lg border border-black/80 bg-black/50 backdrop-blur-md flex flex-col justify-center items-center gap-y-4'>
+          <h4 className='title' style={{ fontSize: '1.2rem', fontWeight: '600' }}>{message}</h4>
+          <Button onClick={handleClose} variant={'default'}>Close</Button>
         </div>
       </div>
     </>

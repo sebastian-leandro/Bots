@@ -4,8 +4,13 @@ import { useState, useEffect } from 'react'
 import { Login, Actions } from '.'
 
 function Main (): React.ReactNode {
-  const [logged, setLogged] = useState<boolean | undefined>(undefined)
-  const [profileInfo, setProfileInfo] = useState<string>('')
+  const [logged, setLogged] = useState<boolean | null>(null)
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
+  const [error, setError] = useState<boolean>(false)
+  const [success, setSuccess] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const checkLogin = async (): Promise<void> => {
@@ -25,8 +30,29 @@ function Main (): React.ReactNode {
   return (
     <>
       <section className='gradient-bg'>
-        {(logged !== undefined && !logged) && <Login logged={setLogged} setProfile={setProfileInfo} />}
-        {(logged !== undefined && logged) && <Actions logged={setLogged} profile={profileInfo} />}
+        {(logged !== null && !logged) && (
+        <Login
+          username={username}
+          password={password}
+          error={error}
+          message={message}
+          success={success}
+          loading={loading}
+          setMessage={setMessage}
+          setLoader={setLoading}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          logged={setLogged}
+          setError={setError}
+          setSuccess={setSuccess}
+        />
+        )}
+        {(logged !== null && logged) && (
+        <Actions
+          logged={setLogged}
+          profile={username}
+        />
+        )}
       </section>
     </>
   )

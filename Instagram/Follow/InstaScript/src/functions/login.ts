@@ -14,7 +14,7 @@ export const options = {
   args: ['--lang=en-US']
 }
 
-export async function login (user: string, password: string): Promise<boolean | { value: boolean, profile: string }> {
+export async function login (user?: string, password?: string): Promise<boolean | { value: boolean, profile: string }> {
   const browser = await puppeteer.launch(options)
   const page = await browser.newPage()
   await page.goto(directions.mainUrl)
@@ -22,19 +22,25 @@ export async function login (user: string, password: string): Promise<boolean | 
   const logged = await loadCookies(page)
   if (!logged) {
     try {
-      await page.type(selectors.loginEmail, user)
-      await page.type(selectors.loginPassword, password)
-      await page.keyboard.press('Enter')
-      await waitTime({ max: 2000, min: 1000 })
-      const isLoggin = await page.waitForSelector(selectors.isLogin, { timeout: 3000, visible: true })
-      if (isLoggin !== null) {
-        await getProfile(page, user)
-        await saveCookies(page)
-        await getProfile(page, user)
-        await browser.close()
-        return true
+      if (user !== undefined && password !== undefined) {
+        await page.type(selectors.loginEmail, user)
+        await page.type(selectors.loginPassword, password)
+        await page.keyboard.press('Enter')
+        await waitTime({ max: 2000, min: 1000 })
+        const isLoggin = await page.waitForSelector(selectors.isLogin, { timeout: 3000, visible: true })
+        if (isLoggin !== null) {
+          await getProfile(page, user)
+          await saveCookies(page)
+          await getProfile(page, user)
+          await browser.close()
+          return true
+        } else {
+          await browser.close()
+          return false
+        }
       } else {
         await browser.close()
+        console.error('Username or password are undefined')
         return false
       }
     } catch (err) {
