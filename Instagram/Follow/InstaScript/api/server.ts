@@ -3,12 +3,14 @@ import type { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 import cors from 'cors'
 import http from 'node:http'
-import { existsSync, unlink } from 'node:fs'
+import { unlink } from 'node:fs'
 import { join } from 'node:path'
 
+import { authenticateToken, generateToken } from './middleware.js'
+
 import { login } from '../src/functions/login.js'
-import { follow } from '@/src/process/follow.js'
-import { unfollow } from '@/src/process/unfollow.js'
+import { follow } from '../src/process/follow.js'
+import { unfollow } from '../src/process/unfollow.js'
 
 const PORT = process.env.PORT ?? 1234
 const Cookiepath: string = join(process.cwd(), 'cookies', 'cookies.json')
@@ -25,12 +27,7 @@ expressApp.use(express.json())
 
 const router = Router()
 
-router.get('/logged', (req, res) => {
-  if (existsSync(Cookiepath)) {
-    return res.status(200).json({ logged: true })
-  }
-  return res.status(200).json({ logged: false })
-})
+router.get('/logged', authenticateToken, (req, res) => { return res.status(200).json({ logged: true }) })
 
 router.get('/logout', (req, res) => {
   try {
@@ -67,18 +64,22 @@ router.post('/login', [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-  const { username, password } = req.body
-  if (typeof username !== 'string' || typeof password !== 'string' || username.length < 3 || password.length < 3) {
-    return res.status(400).json({ message: 'Invalid Username or Password. Try Again' })
-  }
 
   try {
-    const loggedIn = await login(username, password)
-    if (loggedIn === true) return res.status(200).json({ logged: true, message: 'Login succesful' })
-    else return res.status(400).json({ logged: false, message: 'Invalid username or password' })
+    const { username, password } = req.body
+    if (typeof username !== 'string' || typeof password !== 'string' || username.length < 3 || password.length < 3) {
+      return res.status(400).json({ logged: false, message: 'Username or password are too short or invalid. Please try again' })
+    }
+    const user = await login(username, password)
+    if (user) {
+      const token = generateToken({ username })
+      return res.status(200).json({ logged: true, message: 'Login successful', token })
+    } else {
+      return res.status(400).json({ logged: false, message: 'Username or password are incorrect. Please try again' })
+    }
   } catch (err) {
     console.error(err)
-    return res.status(500).json({ loggedIn: false, message: 'There was a problem. Please try again' })
+    return res.status(500).json({ error: 'There was a problem. Try again' })
   }
 })
 

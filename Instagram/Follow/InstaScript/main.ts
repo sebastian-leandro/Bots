@@ -5,7 +5,7 @@ import { startServer } from './api/server.js'
 
 const options = {
   width: 960,
-  height: 720,
+  height: 680,
   minWidth: 720,
   minHeight: 580,
   resizable: true,

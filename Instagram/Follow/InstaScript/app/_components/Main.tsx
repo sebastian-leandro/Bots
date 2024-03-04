@@ -12,19 +12,44 @@ function Main (): React.ReactNode {
   const [success, setSuccess] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
+  function parseJwt (token: string): { username: string, iat: number, exp: number } | null {
+    try {
+      const base64Url = token.split('.')[1]
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      }).join(''))
+
+      return JSON.parse(jsonPayload)
+    } catch (e) {
+      return null
+    }
+  }
+
   useEffect(() => {
     const checkLogin = async (): Promise<void> => {
       try {
-        const res = await fetch('http://localhost:1234/logged')
-        const data = await res.json()
-        if (data?.logged === true) {
-          setLogged(true)
-        } else {
-          setLogged(false)
-        }
-      } catch (err) { console.error(err) }
+        const token = localStorage.getItem('token')
+        if (token) {
+          const decoded = parseJwt(token)
+          if (typeof decoded === 'object') { setUsername(decoded?.username ?? 'Anonymous') }
+          const res = await fetch('http://localhost:1234/logged', { headers: { Authorization: `Bearer ${token}` } })
+
+          if (!res.ok) throw new Error('Failed to authenticate')
+
+          const data = await res.json()
+          if (data.logged) {
+            setSuccess(true)
+            setMessage(data.message as string)
+            setLogged(true)
+          }
+        } else { setLogged(false) }
+      } catch (err) {
+        console.error(err)
+        setLogged(false)
+      }
     }
-    checkLogin().catch(err => { console.error(err) })
+    checkLogin().catch((err) => { console.error('There was an error checking the login', err) })
   }, [])
 
   return (
@@ -35,7 +60,7 @@ function Main (): React.ReactNode {
           username={username}
           password={password}
           error={error}
-          message={message}
+          msg={message}
           success={success}
           loading={loading}
           setMessage={setMessage}

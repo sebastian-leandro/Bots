@@ -33,6 +33,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-misused-promises': ['error', {
       checksVoidReturn: false
-    }]
+    }],
+    '@typescript-eslint/strict-boolean-expressions': 'off'
   }
 }

@@ -15,5 +15,5 @@
     ]
   },
   "include": ["main.ts", "src/"],
-  "exclude": ["node_modules", "**/*.tsbuildinfo", "extension.js"]
+  "exclude": ["node_modules", "**/*.tsbuildinfo"]
 }

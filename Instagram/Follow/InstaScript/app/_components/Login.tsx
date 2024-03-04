@@ -11,41 +11,58 @@ import type { LoginProps } from '@/types/types'
 function Login ({ ...props }: LoginProps): React.ReactNode {
   const [visible, setVisible] = useState<boolean>(false)
 
+  const {
+    username,
+    password,
+    error,
+    success,
+    msg,
+    loading,
+    logged,
+    setSuccess,
+    setLoader,
+    setError,
+    setMessage,
+    setUsername,
+    setPassword
+  } = props
+
   const errorHandler = (message: string): void => {
-    props.setLoader(false)
-    props.setError(true)
-    props.setMessage(message)
+    setLoader(false)
+    setError(true)
+    setMessage(message)
   }
 
-  const handleUser = (event: React.ChangeEvent<HTMLInputElement>): void => { props.setUsername(event.target.value) }
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>): void => { props.setPassword(event.target.value) }
+  const handleUser = (event: React.ChangeEvent<HTMLInputElement>): void => { setUsername(event.target.value) }
+  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>): void => { setPassword(event.target.value) }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    if (props.username.length < 3 || props.password.length < 3) {
+    if (username.length < 3 || password.length < 3) {
       errorHandler('Username and password must at least 3 characters long')
       return
     }
-    props.setLoader(true)
+    setLoader(true)
     try {
       const res = await fetch('http://localhost:1234/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: props.username, password: props.password })
+        body: JSON.stringify({ username, password })
       })
-      const data = await res.json()
-      if (res.ok && data.logged as boolean) {
-        props.setSuccess(true)
-        props.setMessage(typeof data.message !== 'string' ? 'Login Successfully' : data.message as string)
-        props.logged(true)
-      } else {
-        errorHandler(typeof data.message === 'string' ? data.message as string : 'Login failed. Please try again')
-      }
+      if (res.headers.get('Content-type')?.includes('application/json')) {
+        const data = await res.json()
+
+        if (res.ok && data.logged) {
+          const { token } = data
+          localStorage.setItem('token', token as string)
+          logged(true)
+        } else {
+          errorHandler(data.message as string ?? 'Login failed. Please try again.')
+        }
+      } else { errorHandler('Login failed. Please try again') }
     } catch (err) {
       errorHandler(`There was a problem. Please try again. ${err as string}`)
-    } finally {
-      props.setLoader(false)
-    }
+    } finally { setLoader(false) }
   }
 
   return (
@@ -87,17 +104,17 @@ function Login ({ ...props }: LoginProps): React.ReactNode {
                 </button>
               </div>
             </div>
-            <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login </Button>
+            <Button type='submit' variant={'default'} className='mt-8 transition-colors duration-300'>Login</Button>
           </form>
         </div>
-        { props.loading && (
+        { loading && (
           <Loader text='Login...' />
         )}
-        { (props.error || props.success) && (
+        { (error || success) && (
           <Modal
-          message={props.message}
-          onErrorClose={props.setError}
-          onSuccessClose={props.setSuccess}
+          message={msg}
+          onErrorClose={setError}
+          onSuccessClose={setSuccess}
           />
         )}
       </section>

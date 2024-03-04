@@ -3,7 +3,7 @@ interface LoginProps {
   password: string
   error: boolean
   success: boolean
-  message: string
+  msg: string
   loading: boolean
   setUsername: (value: string) => void
   setPassword: (value: string) => void

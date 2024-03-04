@@ -5,6 +5,26 @@
   "main": "/dist/index.js",
   "type": "module",
   "private": true,
+  "build": {
+    "appId": "com.instascript.app",
+    "productName": "Instascript",
+    "directories": {
+      "output": "electron"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icon/icon.ico"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": "dmg",
+      "icon": "icon/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon/icon.png"
+    }
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,26 +32,29 @@
     "start:electron": "NODE_ENV=development electron ./dist/main.js"
   },
   "dependencies": {
-    "@radix-ui/react-progress": "^1.0.3",
-    "@radix-ui/react-slot": "^1.0.2",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
-    "cors": "^2.8.5",
+    "@radix-ui/react-progress": "1.0.3",
+    "@radix-ui/react-slot": "1.0.2",
+    "class-variance-authority": "0.7.0",
+    "clsx": "2.1.0",
+    "cors": "2.8.5",
     "electron": "29.1.0",
+    "electron-builder": "24.13.3",
     "express": "4.18.3",
     "express-validator": "7.0.1",
-    "lucide-react": "^0.323.0",
+    "jsonwebtoken": "9.0.2",
+    "lucide-react": "0.323.0",
     "next": "14.1.0",
     "puppeteer": "22.3.0",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "18",
+    "react-dom": "18",
     "sass": "1.71.1",
-    "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwind-merge": "2.2.1",
+    "tailwindcss-animate": "1.0.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

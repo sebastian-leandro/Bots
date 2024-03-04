@@ -84,7 +84,7 @@ export async function getProfile (page: Page, user: string): Promise<void> {
       if (img !== null && img instanceof HTMLImageElement) return img.src
       else return undefined
     }, selectors.profileImg)
-    if (imgUrl !== null) {
+    if (imgUrl) {
       await getImage(imgUrl)
     }
   } catch (err) { console.error('Could not get profile. Error: ', err) }
@@ -108,7 +108,5 @@ async function getImage (url: string | undefined): Promise<void> {
         }).on('error', (err) => { reject(err) })
       })
     }
-  } catch (err) {
-    console.error('Could not get profile image. Error: ', err)
-  }
+  } catch (err) { console.error('Could not get profile image. Error: ', err) }
 }
